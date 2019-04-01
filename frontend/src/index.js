@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {BrowserRouter} from 'react-router-dom';
 
 const theme = createMuiTheme({
 	typography: {
@@ -19,9 +18,7 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
 	<MuiThemeProvider theme={theme}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
+		<App />
 	</MuiThemeProvider>, document.getElementById('root')
 );
 

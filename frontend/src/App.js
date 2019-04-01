@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 import SignUpPage from './components/Signup/SignUpPage';
 import SignInPage from './components/SignIn/SignInPage';
 import MyMessagePage from './components/MyMessage/MyMessagePage';
@@ -12,30 +12,23 @@ import NearContentsListView from './components/contents/NearContentsListView';
 import Footer from './components/UIElements/Footer';
 import CateGory from './components/category/CateGory';
 import DetailContentsController from './components/contents/DetailContentsController';
-import AppContextProvider from './contexts/appContext';
-import Login from './components/UIElements/Login';
 import AllContent from './components/UIElements/AllContent';
 import CustomSnackbar from './components/UIElements/CustomSnackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {withRouter} from 'react-router';
+import AppContextProvider from './contexts/appContext';
 
-const excludePage = [
-  '/'
-]
 
 class App extends Component {
   render() {
-    
     return (
       <>
         <AppContextProvider>
+          <BrowserRouter>
             <div className="App">
-              <div className="app-wrapper">
-              {excludePage.indexOf(this.props.history.location.pathname) < 0 ? <TopAppBar/>: null}
-              <Route exact path="/" component={Login} />
+              <TopAppBar />
               <CssBaseline />
               <CustomSnackbar/>
-              <Route path="/templates" component={Template} />
+              <Route exact path="/" component={Template} />
               <Route path="/write" component={ContentsController} />
               <Route path="/contents" component={ContentsListView} />
               <Route path="/near" component={NearContentsListView} />
@@ -48,13 +41,13 @@ class App extends Component {
               <Route path="/detail/:id" component={DetailContentsController} />
               <Route path="/detail//" component={Error}/>
               <Route path="/AllContent/" component = {AllContent}/>
-              {excludePage.indexOf(this.props.history.location.pathname) < 0 ? <Footer/>: null}
-              </div>
+              <Footer />
             </div>
+          </BrowserRouter>
         </AppContextProvider>
       </>
     );
   }
 }
 
-export default withRouter(App);
+export default App;

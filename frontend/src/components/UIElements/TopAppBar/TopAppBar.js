@@ -41,7 +41,7 @@ class TopAppBar extends Component {
         <AppBar className={classes.appBar} position="static">
           <Toolbar>
             <div className={classes.grow}>
-              <Link className={classes.link} to="/templates">
+              <Link className={classes.link} to="/">
                 STUDYHUB
               </Link>
             </div>

@@ -10,6 +10,7 @@ const styles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		position: 'relative',
 	},
 	container: {
 		width: '100%',
