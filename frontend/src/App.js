@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route, BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import SignUpPage from './components/Signup/SignUpPage';
-import SignInPage from './components/SignIn/SignInPage';
+import SignUpPage from './components/UserPages/SignUpPage';
+import SignInPage from './components/UserPages/SignInPage';
 import MyMessagePage from './components/MyMessage/MyMessagePage';
 import MyPage from './components/MyPage/MyPage';
 import Template from './components/UIElements/Template';

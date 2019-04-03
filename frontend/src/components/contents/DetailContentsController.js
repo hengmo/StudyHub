@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import DetailContentsView from './DetailContentsView';
+import LoadingProgress from '../UIElements/LoadingProgress';
 
 /* global naver */
 
@@ -15,10 +16,11 @@ class DetailContentsController extends Component {
       studyLocation: 'studyLocation',
       leader: {
         name: 'name',
-        profileImg: 'profileImg',
+        profileImg: 'coverimg/defaultAvartar.png',
       },
       createdAt: 'createdAt',
       categories: 'categories',
+      imageUrl: 'coverimg/study-basic.jpg'
     },
     detailTerm: this.props.match.params.id,
     loginStatus: false,
@@ -29,7 +31,7 @@ class DetailContentsController extends Component {
     const content = await this.context.actions.getContentsDetail(detailTerm);
     const location = await this.getLatLngByAddress(content.studyLocation);
     const participants = content.participants;
-
+  
     const map = new naver.maps.Map('naverMap', {
       center: new naver.maps.LatLng(location),
       zoom: 10
@@ -45,6 +47,10 @@ class DetailContentsController extends Component {
       loginStatus: this.context.state.signInInfo.status,
     });
   };
+
+  componentDidUpdate() {
+    
+  }
 
   getLatLngByAddress = (address) => {
     return new Promise((resolve, reject) => {
@@ -67,13 +73,17 @@ class DetailContentsController extends Component {
   };
 
   render() {
+    const { content, participants, loginStatus, } = this.state;
     return (
-      <DetailContentsView 
-        content={this.state.content}
-        participants={this.state.participants}
-        loginStatus={this.state.loginStatus}
-        joinStudy={this.joinStudy}
-      />
+      <div>
+        <LoadingProgress />
+        <DetailContentsView 
+          content={content}
+          participants={participants}
+          loginStatus={loginStatus}
+          joinStudy={this.joinStudy}
+        />
+      </div>
     );
   }
 }

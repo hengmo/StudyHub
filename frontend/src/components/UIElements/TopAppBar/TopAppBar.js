@@ -16,7 +16,7 @@ const styles = {
     flexGrow: 1,
   },
   link: {
-    color: '#90CAF9',
+    color: '#F64060',
     fontSize: 20,
     fontWeight: 500,
     textDecoration: 'none',
@@ -46,7 +46,7 @@ class TopAppBar extends Component {
               </Link>
             </div>
             <Button className={classes.button} component={Link} to="/contents" style={{color: '#FFFFFF'}}>스터디 찾기</Button>
-            {this.context.state.signInInfo.status === false ? <div><Button className={classes.button} component={Link} to="/signup" style={{color: '#90CAF9'}}>회원가입</Button><Button className={classes.button} component={Link} to="/signin" style={{color: '#FFFFFF'}}> 로그인 </Button></div> : <Avatar/>}
+            {this.context.state.signInInfo.status === false ? <div><Button className={classes.button} component={Link} to="/signup" style={{color: '#F64060'}}>회원가입</Button><Button className={classes.button} component={Link} to="/signin" style={{color: '#FFFFFF'}}> 로그인 </Button></div> : <Avatar/>}
           </Toolbar>
         </AppBar>
       </div>

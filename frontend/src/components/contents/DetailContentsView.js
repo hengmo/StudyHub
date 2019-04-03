@@ -42,7 +42,7 @@ const style = theme => ({
     width: 100,
     height: 50,
     marginBottom: 25,
-    color: '#90CAF9',
+    color: '#F64060',
   },
   joinContainer: {
     height: '88%',
@@ -58,7 +58,6 @@ const style = theme => ({
   },
   button: {
     width: '80%',
-    color: 'black',
     margin: theme.spacing.unit,
   },
   mainContainer: {
@@ -80,7 +79,7 @@ const style = theme => ({
     marginBottom: 25,
   },
   avatarIcon: {
-    backgroundColor: '#90CAF9',
+    backgroundColor: '#F64060',
   },
   naverMap: {
     width: '100%',

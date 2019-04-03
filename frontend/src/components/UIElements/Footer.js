@@ -6,7 +6,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     height: 160,
-		background: '#90CAF9',
+		background: '#353E48',
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -21,11 +21,12 @@ const styles = theme => ({
 		alignItems: 'center',
 	},
 	text: {
-		color: '#263238',
+		color: '#B4B7BB',
 		fontWeight: 600,
+		display: 'flex',
 	},
 	favoriteIcon: {
-		color: 'red',
+		color: '#F64060',
 	},
 });
 
@@ -34,7 +35,7 @@ const Footer = (props) => {
 	return (
 		<div className={classes.root}>
 			<div className={classes.container}>
-				<Typography className={classes.text} variant="h5">Study Hub Web Dev Project.</Typography>
+				<Typography className={classes.text} variant="h5">StudyHub Web Dev Project.</Typography>
 				<Typography className={classes.text}><Favorite className={classes.favoriteIcon}/>Copyright © 2019. StudyHub(Yu JaeSeo, Jeong JinLee, Choi JunSung). All right reserved.<Favorite className={classes.favoriteIcon}/></Typography>
 			</div>
 		</div>

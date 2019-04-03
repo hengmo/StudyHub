@@ -1,21 +1,7 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import queryString from 'query-string';
-import {
-  withStyles,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  OutlinedInput,
-  Select,
-  MenuItem,
-  FormControl,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  InputLabel,
-} from '@material-ui/core';
+import { withStyles, Paper, TextField, Button, Typography, OutlinedInput, Select, MenuItem, FormControl, Checkbox, FormGroup, FormControlLabel, InputLabel } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import studyBackgroundImg from '../../images/study-background.jpg';
 
@@ -34,10 +20,10 @@ const styles = theme => ({
     position: 'absolute',
     textAlign: 'center',
     width: '100%',
-    marginTop: -100,
+    marginTop: -160,
   },
   topTitle: {
-    color: '#E3F2FD',
+    color: 'white',
     fontWeight: 600,
     marginBottom: 12,
   },
@@ -86,7 +72,6 @@ const styles = theme => ({
   button: {
     fontSize: 20,
     margin: 40,
-    color: 'black',
   },
 });
 
@@ -95,19 +80,7 @@ class ContentsController extends Component {
 
   state = {
     title: '',
-    categories: [
-      '영어',
-      '일본어',
-      '중국어',
-      '회화',
-      '취업준비',
-      '면접',
-      '자기소개서',
-      '프로젝트',
-      '코딩 테스트',
-      '전공',
-      '인적성/NCS',
-    ],
+    categories: ['영어', '일본어', '중국어', '회화', '취업준비', '면접', '자기소개서', '프로젝트', '코딩 테스트', '전공', '인적성/NCS'],
     selectedCategories: [],
     description: '',
     addresses: [],
@@ -135,25 +108,11 @@ class ContentsController extends Component {
   //확인 버튼 클릭시 formData 초기화 후 context addContents에 formData 전달하여 호출
   addContents = async e => {
     e.preventDefault();
-    const {
-      title,
-      selectedCategories: categories,
-      description,
-      selectedLocation: studyLocation,
-    } = this.state;
-    const {
-      name: leader,
-      email,
-      image: profileImg,
-    } = this.context.state.signInInfo;
+    const { title, selectedCategories: categories, description, selectedLocation: studyLocation } = this.state;
+    const { name: leader, email, image: profileImg } = this.context.state.signInInfo;
     const coverImg = document.getElementById('coverImg').files[0];
 
-    if (
-      title !== '' &&
-      categories !== '' &&
-      description !== '' &&
-      studyLocation !== ''
-    ) {
+    if (title !== '' && categories !== '' && description !== '' && studyLocation !== '') {
       const dataInObject = {
         title,
         categories,
@@ -177,10 +136,7 @@ class ContentsController extends Component {
 
   async componentDidMount() {
     const currentPosition = queryString.parse(this.props.location.search);
-    const currentLatLng = new naver.maps.LatLng(
-      currentPosition.lat,
-      currentPosition.lng,
-    );
+    const currentLatLng = new naver.maps.LatLng(currentPosition.lat, currentPosition.lng);
 
     this.setState({
       addresses: await this.getAddressesByLatLng(currentLatLng),
@@ -263,16 +219,7 @@ class ContentsController extends Component {
                 {categories.map(category => {
                   return (
                     <FormControlLabel
-                      control={
-                        <Checkbox
-                          icon={<FavoriteBorder />}
-                          checkedIcon={<Favorite />}
-                          color="primary"
-                          value={category}
-                          key={category}
-                          onChange={this.categoryHandler}
-                        />
-                      }
+                      control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} color="primary" value={category} key={category} onChange={this.categoryHandler} />}
                       label={category}
                       key={category}
                     />
@@ -283,23 +230,14 @@ class ContentsController extends Component {
             <div className={classes.inputContainer}>
               <Typography className={classes.inputText}>스터디 장소</Typography>
               <div id="naverMap" className={classes.naverMap} />
-              <FormControl
-                variant="outlined"
-                className={classes.addressSelection}
-              >
+              <FormControl variant="outlined" className={classes.addressSelection}>
                 <InputLabel htmlFor="address-select">주소선택</InputLabel>
                 <Select
                   value={selectedLocation}
                   onChange={e => {
                     this.setState({ selectedLocation: e.target.value });
                   }}
-                  input={
-                    <OutlinedInput
-                      name="address"
-                      id="address-select"
-                      labelWidth={0}
-                    />
-                  }
+                  input={<OutlinedInput name="address" id="address-select" labelWidth={0} />}
                 >
                   {addresses.map((address, index) => {
                     return (
@@ -312,9 +250,7 @@ class ContentsController extends Component {
               </FormControl>
             </div>
             <div className={classes.inputContainer}>
-              <Typography className={classes.inputText}>
-                상세 내용 입력
-              </Typography>
+              <Typography className={classes.inputText}>상세 내용 입력</Typography>
               <TextField
                 className={classes.textField}
                 multiline
@@ -328,17 +264,10 @@ class ContentsController extends Component {
               />
             </div>
             <div className={classes.inputContainer}>
-              <Typography className={classes.inputText}>
-                스터디 커버 이미지
-              </Typography>
+              <Typography className={classes.inputText}>스터디 커버 이미지</Typography>
               <input type="file" id="coverImg" multiple />
             </div>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              onClick={this.addContents}
-            >
+            <Button className={classes.button} variant="contained" color="primary" onClick={this.addContents}>
               스터디 작성
             </Button>
           </Paper>
