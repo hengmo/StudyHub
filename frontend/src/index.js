@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import AppContextProvider from './contexts/appContext';
 
 const theme = createMuiTheme({
 	typography: {
@@ -11,14 +13,18 @@ const theme = createMuiTheme({
 	},
 	palette: {
 		primary: {
-			main: '#F64060',
+			main: '#90CAF9',
 		},
 	},
 });
 
 ReactDOM.render(
 	<MuiThemeProvider theme={theme}>
-		<App />
+		<AppContextProvider>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</AppContextProvider>
 	</MuiThemeProvider>, document.getElementById('root')
 );
 

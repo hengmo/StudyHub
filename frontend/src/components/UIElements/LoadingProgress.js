@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = {
+const styles = theme => ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 900,
   },
-};
+  progress: {
+    margin: theme.spacing.unit * 2,
+  },
+});
 
 class LoadingProgress extends React.Component {
   state = {
@@ -15,7 +21,7 @@ class LoadingProgress extends React.Component {
   };
 
   componentDidMount() {
-    this.timer = setInterval(this.progress, 500);
+    this.timer = setInterval(this.progress, 20);
   }
 
   componentWillUnmount() {
@@ -24,19 +30,18 @@ class LoadingProgress extends React.Component {
 
   progress = () => {
     const { completed } = this.state;
-    if (completed === 100) {
-      this.setState({ completed: 0 });
-    } else {
-      const diff = Math.random() * 10;
-      this.setState({ completed: Math.min(completed + diff, 100) });
-    }
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
 
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <LinearProgress color="secondary" variant="determinate" value={this.state.completed} />
+        <CircularProgress
+          className={classes.progress}
+          variant="determinate"
+          value={this.state.completed}
+        />
       </div>
     );
   }

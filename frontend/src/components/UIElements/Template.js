@@ -100,12 +100,13 @@ class Template extends Component {
     this.setState({ values: this.state.values + 1 });
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.values === nextState.values || this.state.searchTerm === nextState.searchTerm;
+    return (
+      this.state.values === nextState.values ||
+      this.state.searchTerm === nextState.searchTerm
+    );
   }
 
   async componentDidMount() {
-    this.context.actions.checkAuth();
-
     this.context.actions.getCurrentPosition();
     this.setState({
       labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
@@ -130,6 +131,11 @@ class Template extends Component {
       },
     );
   };
+  openSnackbar = () => {
+    const { signInInfo: { status: loginStatus }} = this.context.state;
+    if(!loginStatus) this.context.actions.snackbarOpenHandler('먼저 회원등록을 해주세요.');
+  };
+
   render() {
     const { lat, lng } = this.context.state;
     const { classes } = this.props;
@@ -142,7 +148,10 @@ class Template extends Component {
               <source type="video/mp4" data-reactid=".0.1.0.0.0" src={movie} />
             </video>
             <div className={classes.textButtonContainer}>
-              <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                style={{ color: 'white', fontWeight: 600 }}
+              >
                 함께 하는 스터디의 동기부여
               </Typography>
               <Typography variant="h6" style={{ color: 'white' }}>
@@ -155,12 +164,13 @@ class Template extends Component {
                       <Link to={`/write?lat=${lat}&lng=${lng}`}>
                         <Button
                           variant="contained"
-                          color="secondary"
+                          color="primary"
                           style={{
                             fontSize: '2.5vh',
                             textDecoration: 'none',
                             width: '260px',
                           }}
+                          onClick={this.openSnackbar}
                         >
                           스터디 시작하기
                         </Button>
@@ -174,7 +184,11 @@ class Template extends Component {
         </div>
         <div className={classes.mainContainer}>
           <div className={classNames(classes.layout, classes.cardGrid)}>
-            <FormControl style={{ width: '25vh' }} variant="outlined" className={classes.formControl}>
+            <FormControl
+              style={{ width: '25vh' }}
+              variant="outlined"
+              className={classes.formControl}
+            >
               <InputLabel
                 ref={ref => {
                   this.InputLabelRef = ref;
@@ -183,7 +197,17 @@ class Template extends Component {
               >
                 Category
               </InputLabel>
-              <Select value={this.state.searchTerm} onChange={this.handleChange} input={<OutlinedInput labelWidth={this.state.labelWidth} name="category" id="outlined-age-simple" />}>
+              <Select
+                value={this.state.searchTerm}
+                onChange={this.handleChange}
+                input={
+                  <OutlinedInput
+                    labelWidth={this.state.labelWidth}
+                    name="category"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
                 <MenuItem value={'영어'}>영어</MenuItem>
                 <MenuItem value={'일본어'}>일본어</MenuItem>
                 <MenuItem value={'중국어'}>중국어</MenuItem>
@@ -198,19 +222,32 @@ class Template extends Component {
               </Select>
             </FormControl>
 
-            <Link style={{ textDecoration: 'none' }} to={`/category/` + this.state.searchTerm + `/`}>
-              <Button style={{ height: '4.7vh' }} variant="contained" color="secondary" className={classes.button}>
+            <Link
+              style={{ textDecoration: 'none' }}
+              to={`/category/` + this.state.searchTerm + `/`}
+            >
+              <Button
+                style={{ height: '4.7vh' }}
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
                 검색
                 {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
               </Button>
             </Link>
             <div>
-              <div style={{ textAlign: 'right', marginBottom: '3vh' }}>모집중!!</div>
+              <div style={{ textAlign: 'right', marginBottom: '3vh' }}>
+                모집중!!
+              </div>
               <Grid container spacing={40}>
                 {this.state.contentsNew.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                      <Card
+                        className={classes.card}
+                        style={{ minHeight: '38vh' }}
+                      >
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -221,12 +258,19 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img src={`http://localhost:8080/` + board.imageUrl} alt="Testing" width="70%" height="auto" />
+                            <img
+                              src={`http://localhost:8080/` + board.imageUrl}
+                              alt="Testing"
+                              width="70%"
+                              height="auto"
+                            />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                            <div style={{ marginBottom: '3vh' }}>
+                              {board.title}
+                            </div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>
@@ -237,12 +281,17 @@ class Template extends Component {
                 ))}
               </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>관심 카테고리 Ⅰ</div>
+              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>
+                관심 카테고리 Ⅰ
+              </div>
               <Grid container spacing={40}>
                 {this.state.contentsAttention1.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                      <Card
+                        className={classes.card}
+                        style={{ minHeight: '38vh' }}
+                      >
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -253,12 +302,19 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img src={`http://localhost:8080/` + board.imageUrl} alt="Testing" width="70%" height="auto" />
+                            <img
+                              src={`http://localhost:8080/` + board.imageUrl}
+                              alt="Testing"
+                              width="70%"
+                              height="auto"
+                            />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                            <div style={{ marginBottom: '3vh' }}>
+                              {board.title}
+                            </div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>
@@ -269,12 +325,17 @@ class Template extends Component {
                 ))}
               </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>관심 카테고리 Ⅱ</div>
+              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>
+                관심 카테고리 Ⅱ
+              </div>
               <Grid container spacing={40}>
                 {this.state.contentsAttention2.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                      <Card
+                        className={classes.card}
+                        style={{ minHeight: '38vh' }}
+                      >
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -285,12 +346,19 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img src={`http://localhost:8080/` + board.imageUrl} alt="Testing" width="70%" height="auto" />
+                            <img
+                              src={`http://localhost:8080/` + board.imageUrl}
+                              alt="Testing"
+                              width="70%"
+                              height="auto"
+                            />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                            <div style={{ marginBottom: '3vh' }}>
+                              {board.title}
+                            </div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>

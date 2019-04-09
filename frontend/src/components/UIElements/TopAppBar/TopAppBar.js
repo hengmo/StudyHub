@@ -16,7 +16,7 @@ const styles = {
     flexGrow: 1,
   },
   link: {
-    color: '#F64060',
+    color: '#90CAF9',
     fontSize: 20,
     fontWeight: 500,
     textDecoration: 'none',
@@ -33,8 +33,12 @@ const styles = {
 class TopAppBar extends Component {
   static contextType = AppContext;
 
+  componentWillUnmount() {
+    console.log('top', 'componentWillUnMount');
+  };
   render() {
     const { classes } = this.props;
+    const { status: loginStatus } = this.context.state.signInInfo;
     
     return (
       <div className={classes.root}>
@@ -46,7 +50,7 @@ class TopAppBar extends Component {
               </Link>
             </div>
             <Button className={classes.button} component={Link} to="/contents" style={{color: '#FFFFFF'}}>스터디 찾기</Button>
-            {this.context.state.signInInfo.status === false ? <div><Button className={classes.button} component={Link} to="/signup" style={{color: '#F64060'}}>회원가입</Button><Button className={classes.button} component={Link} to="/signin" style={{color: '#FFFFFF'}}> 로그인 </Button></div> : <Avatar/>}
+            {loginStatus === false ? <div><Button className={classes.button} component={Link} to="/signup" style={{color: '#90CAF9'}}>회원가입</Button><Button className={classes.button} component={Link} to="/signin" style={{color: '#FFFFFF'}}>로그인</Button></div> : <Avatar/>}
           </Toolbar>
         </AppBar>
       </div>

@@ -75,45 +75,12 @@ router.post('/register', (req, res, next) => {
             });
             // 토큰 document 저장
             newToken.save()
-              .then(() => res.send({state: 'success', message:'회원가입에 성공했습니다.', url: '/templates'}))
+              .then(() => res.send({state: 'success', message:'회원가입에 성공했습니다.', url: '/signin'}))
               .catch(err => next(err));
         })
-        .catch(err => next(err));   
-/*
-        mailgun service 잠시 중지됨
-        
-        const html = `안녕하세요,
-        <br/>
-        회원가입을 위해서 아래의 링크를 눌러주세요.
-        <br/>
-        ToKen: <b>${secretToken}</b>
-        <br/>
-        <a href= "http://localhost:8080/api/users/verify?token=${secretToken}"> 인증확인 </a>
-        <br/>
-        <br/>
-        감사합니다.`;
-        
-        
-        mailer.sendEmail('yjs08090@naver.com',email,'이메일을 통해 인증해주세요', html)
-          .then(() => {
-            newUser.save()
-              .then(() => {
-                newToken = new Token({
-                  //userId
-                  _id: newUser._id,
-                  token: secretToken
-                });
-
-                newToken.save()
-                  .then(() => res.send({message: "회원가입에 성공했습니다."}))
-                  .catch(err => next(err));
-              })
-              .catch(err => next(err));   
-          })
-          .catch((err)=> {next(err)})  // 유효하지 않은 이메일 사용자가 볼 수 있게 해야한다.*/
+        .catch(err => next(err));
       }
-      // 이미 가입한 경우
-      else{
+      else {
         res.send({state: 'warning', message:'이미 가입한 아이디입니다.', url: redirectURL});
       }
     })
@@ -158,6 +125,8 @@ router.post('/signin',(req, res, next) => {
           next(err);
       })
     }
+    console.log('111111111111', req.user);
+    console.log('222222222222', req);
     info.url = info.url === null ? redirectURL : info.url;
     res.send(info);
   })(req, res, next)
@@ -178,7 +147,8 @@ router.post('/checkAuth',(req, res, next )=>{
       id : req.user._id,
       email : req.user.email,
       image: req.user.image,
-      name: req.user.name
+      name: req.user.name,
+      date: req.user.date,
     });
   }
   else{
@@ -200,25 +170,11 @@ router.post('/signout',(req, res, next)=>{
   });
 });
 
-router.post('/delete', async (req, res, next)=>{
-  console.log("delte");
+router.post('/delete', ensureAuthenticatedErrorMessage ,async (req, res, next)=>{
+  console.log("delete");
 
   const app = await User.findOne({ _id: req.user._id}).exec();
   await app.remove(); //prints 'pre remove'
-
-  /*User.findById(req.user._id)
-    .exec((err,doc)=>{
-      if(err)
-        next(err);
-        console.log(doc);
-        doc.remove({_id: req.user._id})
-          .exec( (err)=>{
-            if (err)
-              next();
-              console.log(req.headers.origin);
-              res.redirect(req.headers.origin);
-          });
-    });*/
 });
 
 router.get('/google_auth',(req, res, next)=>{

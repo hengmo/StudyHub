@@ -53,7 +53,9 @@ class MypageField extends Component {
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
+    const { email, name, date } = this.context.state.signInInfo;
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
     return (
       <Grid container className={classes.root} spacing={16}>
@@ -66,16 +68,13 @@ class MypageField extends Component {
               <Grid item container xs={12} sm className = {classes.infoSpacing}>
                 <Grid item xs container direction="column" spacing={8}>
                   <Grid item>
-                    <Typography className = {classes.typo} gutterBottom>이메일 : asfasf (회원 가입일 : 1993.08.09)</Typography>
+                    <Typography className = {classes.typo} gutterBottom>이메일 : {email}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography className = {classes.typo} gutterBottom >닉네임 : </Typography>
+                    <Typography className = {classes.typo} gutterBottom >닉네임 : {name}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography className = {classes.typo} gutterBottom>생년월일 : </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography className = {classes.typo} gutterBottom>주소 : </Typography>
+                    <Typography className = {classes.typo} gutterBottom>회원 가입일 : {new Date(date).toLocaleDateString('ko-KR', options)}</Typography>
                   </Grid>
                 </Grid>
               </Grid>

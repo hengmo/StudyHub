@@ -7,62 +7,48 @@ import LoadingProgress from '../UIElements/LoadingProgress';
 
 class DetailContentsController extends Component {
   static contextType = AppContext;
-  
+
   state = {
-    participants: [],
-    content: {
-      title: 'title',
-      description: 'description',
-      studyLocation: 'studyLocation',
-      leader: {
-        name: 'name',
-        profileImg: 'coverimg/defaultAvartar.png',
-      },
-      createdAt: 'createdAt',
-      categories: 'categories',
-      imageUrl: 'coverimg/study-basic.jpg'
-    },
     detailTerm: this.props.match.params.id,
-    loginStatus: false,
+    signInInfo: {},
   };
 
   async componentDidMount() {
-    const { detailTerm, } = this.state;
+    const { detailTerm } = this.state;
     const content = await this.context.actions.getContentsDetail(detailTerm);
     const location = await this.getLatLngByAddress(content.studyLocation);
     const participants = content.participants;
-  
+
+    this.setState({
+      content,
+      participants,
+      signInInfo: this.context.state.signInInfo,
+    });
+
     const map = new naver.maps.Map('naverMap', {
       center: new naver.maps.LatLng(location),
-      zoom: 10
+      zoom: 10,
     });
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(location),
       map: map,
     });
-
-    this.setState({
-      content: content,
-      participants: participants,
-      loginStatus: this.context.state.signInInfo.status,
-    });
-  };
-
-  componentDidUpdate() {
-    
   }
 
-  getLatLngByAddress = (address) => {
+  getLatLngByAddress = address => {
     return new Promise((resolve, reject) => {
-      naver.maps.Service.geocode({
-        address: address
-    }, (status, response) => {
-        if (status === naver.maps.Service.Status.ERROR) {
-          reject(alert('지도 API 오류입니다.'));
-        }
-        let item = response.result.items[0]
-        resolve(item.point);
-      });
+      naver.maps.Service.geocode(
+        {
+          address: address,
+        },
+        (status, response) => {
+          if (status === naver.maps.Service.Status.ERROR) {
+            reject(alert('지도 API 오류입니다.'));
+          }
+          let item = response.result.items[0];
+          resolve(item.point);
+        },
+      );
     });
   };
 
@@ -72,17 +58,27 @@ class DetailContentsController extends Component {
     window.location.reload();
   };
 
+  leaveStudy = async () => {
+    const { detailTerm } = this.state;
+    await this.context.actions.leaveStudy(detailTerm);
+    window.location.reload();
+  };
+
+  deleteStudy = async () => {
+    const { detailTerm } = this.state;
+    await this.context.actions.deleteStudy(detailTerm);
+    this.props.history.push('/');
+  };
+
   render() {
-    const { content, participants, loginStatus, } = this.state;
+    const { content, participants, signInInfo } = this.state;
     return (
       <div>
-        <LoadingProgress />
-        <DetailContentsView 
-          content={content}
-          participants={participants}
-          loginStatus={loginStatus}
-          joinStudy={this.joinStudy}
-        />
+        {content ? (
+          <DetailContentsView content={content} participants={participants} signInInfo={signInInfo} joinStudy={this.joinStudy} deleteStudy={this.deleteStudy} leaveStudy={this.leaveStudy} />
+        ) : (
+          <LoadingProgress />
+        )}
       </div>
     );
   }

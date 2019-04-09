@@ -55,6 +55,44 @@ router.post('/', upload, (req, res, next) => {
   });
 });
 
+//스터디 내용 상세보기
+router.get('/detail/:id', (req,res,next) => {
+  Contents.findOneAndUpdate({ id: req.params.id },{ $inc: { views: 1 } }, (err, contents) => {
+    if (err) return next(err);
+    //console.log(res);
+    res.json(contents);
+  })
+});
+
+//스터디 참여
+router.put('/join/:id', (req, res, next) => {
+  const participants = [{
+    name: req.user.name,
+    email: req.user.email,
+    profileImg: req.user.image,
+  }];
+  Contents.findOneAndUpdate({ id: req.params.id }, { $push: { participants: participants } }, (err, contents) => {
+    if (err) return next(err);
+    res.json(contents);
+  })
+});
+
+//스터디 탈퇴
+router.put('/leave/:id', (req, res, next) => {
+  Contents.findOneAndUpdate({ id: req.params.id }, { $pull: { participants: { email: req.user.email } } }, (err, contents) => {
+    if (err) return next(err);
+    res.json(contents);
+  })
+});
+
+//스터디 삭제
+router.delete('/delete/:id', (req, res, next) => {
+  Contents.deleteOne({ id: req.params.id }, (err, contents) => {
+    if (err) return next(err);
+    res.json(contents);
+  })
+});
+
 router.get('/representation1', (req, res, next) => { 
   Contents.find((err, contents) => {
     if (err) return next(err);
@@ -114,29 +152,5 @@ router.get('/context/:id', (req, res, next) => {
     res.json(contents);
   }); 
 });
-
-router.get('/detail/:id', (req,res,next) => {
-  Contents.findOneAndUpdate({ id: req.params.id },{ $inc: { views: 1 } }, (err, contents) => {
-    if (err) return next(err);
-    //console.log(res);
-    res.json(contents);
-  })
-});
-
-//
-router.post('/join/:id', (req, res, next) => {
-  console.log(req);
-  const participants = [{
-    name: req.user.name,
-    email: req.user.email,
-    profileImg: req.user.image,
-  }];
-  Contents.findOneAndUpdate({ id: req.params.id }, { $push: { participants: participants } }, (err, contents) => {
-    if (err) return next(err);
-    //console.log(res);
-    res.json(contents);
-  })
-});
-  
 
 module.exports = router;

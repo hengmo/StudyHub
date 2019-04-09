@@ -91,7 +91,7 @@ module.exports.initialize = (passport) => {
             if(isMatch) {
               // executing done method -> passport.serializeUser
               // baseurl 로 돌아간다. 
-              return done(null, user, {state: 'success', message: '로그인에 성공했습니다.', url:'/'});
+              return done(null, user, {state: 'success', message: '로그인에 성공했습니다.', url:'http://localhost:3000/'});
             } else{
               // 일치하지 않는 경우
               return done(null, null, {state: 'warning', message: '비밀번호가 일치하지 않습니다.', url: null});
@@ -150,7 +150,7 @@ module.exports.initialize = (passport) => {
 module.exports.ensureAuthenticatedErrorMessage = (req, res, next) =>{
   if(req.user)
     return next();
-  res.send('허용되지 않은 요청입니다.');
+  res.status(401).send({state: 'error' ,message: '허용되지 않은 요청입니다.'});
 }
 
 module.exports.ensureAuthenticatedRedirect = (req, res, next) =>{

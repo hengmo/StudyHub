@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -12,8 +12,7 @@ import classNames from 'classnames';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 import IconButton from '@material-ui/core/IconButton';
-import {AppContext} from '../../contexts/appContext';
-
+import { AppContext } from '../../contexts/appContext';
 
 const styles2 = theme => ({
   margin: {
@@ -28,19 +27,19 @@ class CustomSnackbar extends Component {
     const { classes } = this.props;
 
     return (
-        <Snackbar
-          anchorOrigin={this.context.state.Snackbar.anchorOrigin}
-          open={this.context.state.Snackbar.open}
-          autoHideDuration={5000}
+      <Snackbar
+        anchorOrigin={this.context.state.Snackbar.anchorOrigin}
+        open={this.context.state.Snackbar.open}
+        autoHideDuration={5000}
+        onClose={this.context.actions.snackbarCloseHandler}
+      >
+        <MySnackbarContentWrapper
+          className={classes.margin}
           onClose={this.context.actions.snackbarCloseHandler}
-        >
-          <MySnackbarContentWrapper
-            className={classes.margin}
-            onClose={this.context.actions.snackbarCloseHandler}
-            variant={this.context.state.Snackbar.variant}
-            message={this.context.state.Snackbar.message}
-          />
-        </Snackbar>
+          variant={this.context.state.Snackbar.variant}
+          message={this.context.state.Snackbar.message}
+        />
+      </Snackbar>
     );
   }
 }
@@ -49,7 +48,7 @@ CustomSnackbar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles (styles2)(CustomSnackbar);
+export default withStyles(styles2)(CustomSnackbar);
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -60,7 +59,7 @@ const variantIcon = {
 
 const styles1 = theme => ({
   success: {
-    backgroundColor: green[600],
+    backgroundColor: '#90CAF9',
   },
   error: {
     backgroundColor: theme.palette.error.dark,

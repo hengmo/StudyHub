@@ -58,29 +58,32 @@ class AvatarandDropdown extends React.Component {
     console.log(option)
     if (option === 'mypage'){
       this.props.history.push('/mypage')
-    }else if (option === 'mymessage'){
+    } else if (option === 'mymessage') {
       this.props.history.push('/mymessagepage');
-    }else if (option === 'signout') {
+    } else if (option === 'signout') {
       apiClient.post('/users/signout')
       .then (()=> {
+        localStorage.setItem("loginState",JSON.stringify(false));
         window.location = '/';
-    });
+      })
+      .catch (err => console.log(err));
+    }
   }
-}
+
   getUnseenMessage(data){
     if (data.recipient === this.context.state.signInInfo.id)
       this.context.actions.getUnseenMessage();
-  }
+  };
 
   componentDidMount(){
     // 현재 로그인 유저가 읽지 않은 쪽지 개수를 요청한다. 
     this.context.actions.getUnseenMessage()
     this.context.state.socketConnection.io.on('unseenMessage',(data) => this.getUnseenMessage(data));
-  }
+  };
 
   componentWillUnmount(){
     this.context.state.socketConnection.io.removeListener('unseenMessage',this.getUnseenMessage);
-  }
+  };
 
   render() {
     const { anchorEl } = this.state;
