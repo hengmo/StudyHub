@@ -127,7 +127,6 @@ export default class AppContextProvider extends Component {
         .catch(err => console.log(err));
     },
     getUnseenMessage: () => {
-      console.log('called');
       return apiClient.post('/messages/unseenmessages').then(unseenInfo => {
         this.setState({
           ...this.state,

@@ -22,7 +22,7 @@ const style = theme => ({
     background: 'white',
   },
   topContainer: {
-    width: '68%',
+    width: '74%',
     height: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
@@ -30,7 +30,7 @@ const style = theme => ({
   },
   simpleInformContainer: {
     height: '88%',
-    width: '58%',
+    width: '59%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -49,9 +49,9 @@ const style = theme => ({
     display: 'flex',
     alignItems: 'center',
   },
-  joinContainer: {
+  userRequestContainer: {
     height: '88%',
-    width: '30%',
+    width: '25%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -124,7 +124,43 @@ const DetailContentsView = props => {
     leaveStudy,
     deleteStudy,
   } = props;
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const test = ['test1', 'test2', 'test3', 'test4', 'test5'];
+
+  const userRendering = () => {
+    if (loginStatus) {
+      if (content.leader.email === loginedUserEmail) {
+        return <Button variant="contained" className={classes.button} color="primary" onClick={deleteStudy}>스터디 삭제</Button>
+      } 
+      else if (participants.map(user => user.email).includes(loginedUserEmail)) {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Typography variant="h6">참여중인 스터디 입니다.</Typography>
+            <Button className={classes.button} variant="contained" color="primary" onClick={leaveStudy}>탈퇴하기</Button>
+          </div>
+        );
+      } 
+      return (
+        <div style={{ textAlign: 'center' }}>
+          <Typography variant="h6">참여 하시겠습니까?</Typography>
+          <div className={classes.buttonContainer}>
+            <Button className={classes.button} variant="contained" color="primary" onClick={joinStudy}>참여하기 </Button>
+          </div>
+        </div>
+      );
+      
+    }
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <Typography variant="h6">스터디에 참여 하려면<br />로그인 해주세요.</Typography>
+      </div>
+    );
+  };
 
   return (
     <div className={classes.root}>
@@ -140,36 +176,7 @@ const DetailContentsView = props => {
               <Typography style={{ marginRight: 15 }}>주최: {content.leader.name}</Typography>
             </div>
           </div>
-          <div className={classes.joinContainer}>
-            {loginStatus ? (
-              content.leader.email === loginedUserEmail || participants.map(user => user.email).includes(loginedUserEmail) ? (
-                <div style={{ textAlign: 'center' }}>
-                  <Typography variant="h6">참여중인 스터디 입니다.</Typography>
-                  <Button className={classes.button} variant="contained" color="primary" onClick={leaveStudy}>
-                    탈퇴하기
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  <Typography variant="h6">참여 하시겠습니까?</Typography>
-                  <div className={classes.buttonContainer}>
-                    <Button className={classes.button} variant="contained" color="primary" onClick={joinStudy}>
-                      참여하기
-                    </Button>
-                  </div>
-                </div>
-              )
-            ) : (
-              <div style={{ textAlign: 'center' }}>
-                <Typography variant="h6">스터디에 참여 하려면<br />로그인 해주세요.</Typography>
-              </div>
-            )}
-            {content.leader.email === loginedUserEmail && (
-              <Button className={classes.button} variant="contained" color="primary" onClick={deleteStudy}>
-                스터디 삭제
-              </Button>
-            )}
-          </div>
+          <div className={classes.userRequestContainer}>{userRendering()}</div>
         </div>
       </div>
       <div className={classes.mainContainer}>
@@ -198,7 +205,7 @@ const DetailContentsView = props => {
               <Grid container spacing={16}>
                 <Grid item sm={6} md={4} lg={3}>
                   <Card className={classes.card}>
-                    <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`${apiUrl}/${content.leader.profileImg}`} />
+                    <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/${content.leader.profileImg}`} />
                     <CardContent style={{ textAlign: 'center' }}>
                       <Typography gutterBottom fontWeight="fontWeightMedium">
                         {content.leader.name}
@@ -207,13 +214,13 @@ const DetailContentsView = props => {
                     </CardContent>
                   </Card>
                 </Grid>
-                {participants.map(user => (
-                  <Grid item key={user.name} sm={6} md={4} lg={3}>
+                {test.map(user => (
+                  <Grid item key={user} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
-                      <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`${apiUrl}/${user.profileImg}`} />
+                      <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/coverimg/defaultAvartar.png`} />
                       <CardContent style={{ textAlign: 'center' }}>
                         <Typography gutterBottom fontWeight="fontWeightMedium">
-                          {user.name}
+                          {user}
                         </Typography>
                         <Typography style={{ fontSize: 15 }}>스터디원</Typography>
                       </CardContent>
