@@ -1,4 +1,5 @@
 import apiClient from '../../../../helpers/apiClient';
+import { apiUrl } from '../../../../helpers/apiClient';
 import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import {AppContext} from '../../../../contexts/appContext';
@@ -97,7 +98,7 @@ class AvatarandDropdown extends React.Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <Avatar className = {classes.avatar} alt="Remy Sharp" src= {`http://localhost:8080/${this.context.state.signInInfo.image}`}/>
+          <Avatar className = {classes.avatar} alt="Remy Sharp" src={`${apiUrl}/${this.context.state.signInInfo.image}`}/>
         </Button>
         <Menu
           id="simple-menu"

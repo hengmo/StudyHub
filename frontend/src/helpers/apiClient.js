@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:8080/api';
+const apiUrl = 'http://18.216.236.158/api';
 const methods = ['get', 'post', 'put', 'delete'];
 
 function formatUrl(path) {
@@ -31,3 +31,5 @@ class ApiClient {
 }
 
 export default new ApiClient();
+
+export { apiUrl };

@@ -98,7 +98,7 @@ export default class AppContextProvider extends Component {
           } else {
             // 새로 로그인을 하는 경우
             if (!this.state.signInInfo.status) {
-              io = socketIOClient('http://localhost:8080');
+              io = socketIOClient('http://18.216.236.158');
               io.on('unseenMessage', data => {
                 console.log('unseenmessage');
                 if (data.recipient !== this.state.signInInfo.id) return;

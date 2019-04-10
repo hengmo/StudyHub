@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { apiUrl } from '../../helpers/apiClient';
 
 const styles = theme => ({
   root: {
@@ -54,7 +55,7 @@ class CateGory extends Component {
                 <div className="mediaQuery" >
                     <Card className={classes.card} style={{minHeight : "32vh"}}>
                       <div key={index}></div>
-                        <Button style={{ width: "100%", height: "20vh"}} className="" onClick={()=>{ let path = `../detail/`+board.id; this.props.history.push(path); }}><div><img src ={`http://localhost:8080/`+board.imageUrl} alt ="Testing" width ="70%" height="auto"/></div></Button>
+                        <Button style={{ width: "100%", height: "20vh"}} className="" onClick={()=>{ let path = `../detail/`+board.id; this.props.history.push(path); }}><div><img src ={`${apiUrl}/${board.imageUrl}`} alt ="Testing" width ="70%" height="auto"/></div></Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
                           <div>{board.title}</div>

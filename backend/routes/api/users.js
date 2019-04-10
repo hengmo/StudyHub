@@ -125,8 +125,6 @@ router.post('/signin',(req, res, next) => {
           next(err);
       })
     }
-    console.log('111111111111', req.user);
-    console.log('222222222222', req);
     info.url = info.url === null ? redirectURL : info.url;
     res.send(info);
   })(req, res, next)

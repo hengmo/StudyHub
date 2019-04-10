@@ -16,6 +16,7 @@ import { Button } from '@material-ui/core';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Chip from '@material-ui/core/Chip';
 import Moment from 'moment';
+import { apiUrl } from '../../helpers/apiClient';
 
 const styles = theme => ({
   root: {
@@ -80,7 +81,7 @@ class Inbox extends Component {
           onClick={e => {e.stopPropagation()}}
           onChange = {(e)=> this.props.onChangeHandler(e,this.props.messageKey)}/>
         <ListItemAvatar>
-          <Avatar alt ="Remy Sharp" src = {`http://localhost:8080/${this.props.sender.image}`} className = {classes.avatar}></Avatar>
+          <Avatar alt ="Remy Sharp" src = {`${apiUrl}/${this.props.sender.image}`} className = {classes.avatar}></Avatar>
         </ListItemAvatar>
         <ListItemText
           //className={classes.textMiddle}

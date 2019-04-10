@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Page.css';
 import apiClient from '../../helpers/apiClient';
+import { apiUrl } from '../../helpers/apiClient';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
@@ -195,12 +196,12 @@ class SignInPage extends Component {
               <Button style={{ marginTop: 50 }} className={`${classes.Button} ${classes.ItemCenter}`} type="submit" fullWidth color="primary" variant="contained">
                 로그인
               </Button>
-              <a className={`removeLinkDec ${classes.ButtonMargin} ${classes.ItemCenter}`} href="http://localhost:8080/api/users/google_auth">
+              <a className={`removeLinkDec ${classes.ButtonMargin} ${classes.ItemCenter}`} href={`${apiUrl}/users/google_auth`}>
                 <Button variant="contained" className={`${classes.GoogleCol} ${classes.Button}`}>
                   구글 계정으로 시작하기
                 </Button>
               </a>
-              <a className={`removeLinkDec ${classes.ButtonMargin} ${classes.ItemCenter}`} href="http://localhost:8080/api/users/naver_auth">
+              <a className={`removeLinkDec ${classes.ButtonMargin} ${classes.ItemCenter}`} href={`${apiUrl}/users/naver_auth`}>
                 <Button variant="contained" className={`${classes.NaverCol} ${classes.Button}`}>
                   네이버 계정으로 시작하기
                 </Button>

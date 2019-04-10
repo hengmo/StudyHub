@@ -107,7 +107,7 @@ module.exports.initialize = (passport) => {
       new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:8080/api/users/google_auth/redirect'	
+        callbackURL: 'http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com/api/users/google_auth/redirect'	
       },
       (accessToken, refreshToken, profile, done) => {
         socialLogin('Google',profile,done);

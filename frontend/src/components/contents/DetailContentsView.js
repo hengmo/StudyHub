@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import { withStyles, Button, Typography, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemText, Avatar, Grid } from '@material-ui/core';
 import classNames from 'classnames';
 import { Group, Place, Update, Category } from '@material-ui/icons';
+import { apiUrl } from '../../helpers/apiClient';
 
 const style = theme => ({
   root: {
@@ -174,7 +175,7 @@ const DetailContentsView = props => {
       <div className={classes.mainContainer}>
         <div className={classes.detailContainer}>
           <Card className={classes.detailContent}>
-            <CardMedia component="img" alt="coverImg" style={{ width: '100%', height: '45vh' }} src={`http://localhost:8080/${content.imageUrl}`} />
+            <CardMedia component="img" alt="coverImg" style={{ width: '100%', height: '45vh' }} src={`${apiUrl}/${content.imageUrl}`} />
           </Card>
           <div className={classes.detailContent}>
             <Typography variant="h5" style={{ marginBottom: 15 }}>
@@ -197,7 +198,7 @@ const DetailContentsView = props => {
               <Grid container spacing={16}>
                 <Grid item sm={6} md={4} lg={3}>
                   <Card className={classes.card}>
-                    <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`http://localhost:8080/${content.leader.profileImg}`} />
+                    <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`${apiUrl}/${content.leader.profileImg}`} />
                     <CardContent style={{ textAlign: 'center' }}>
                       <Typography gutterBottom fontWeight="fontWeightMedium">
                         {content.leader.name}
@@ -209,7 +210,7 @@ const DetailContentsView = props => {
                 {participants.map(user => (
                   <Grid item key={user.name} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
-                      <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`http://localhost:8080/${user.profileImg}`} />
+                      <Avatar style={{ width: '58%', height: '38%', marginTop: 12 }} src={`${apiUrl}/${user.profileImg}`} />
                       <CardContent style={{ textAlign: 'center' }}>
                         <Typography gutterBottom fontWeight="fontWeightMedium">
                           {user.name}

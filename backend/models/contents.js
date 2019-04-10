@@ -17,6 +17,6 @@ const ContentsSchema = new Schema(
   participants: Array,
 });
 autoIncrement.initialize(mongoose.connection);
-ContentsSchema.plugin(autoIncrement.plugin, {model : 'Contents' , field : 'id' , startAt : 1 })
+ContentsSchema.plugin(autoIncrement.plugin, {model : 'contents' , field : 'id' , startAt : 1 })
 
-module.exports = mongoose.model("Contents", ContentsSchema);
+module.exports = mongoose.model("contents", ContentsSchema);

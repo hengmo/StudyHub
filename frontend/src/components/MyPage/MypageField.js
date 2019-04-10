@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import apiClient from '../../helpers/apiClient';
+import { apiUrl } from '../../helpers/apiClient';
 
 const style = theme => ({
   root: {
@@ -63,7 +64,7 @@ class MypageField extends Component {
           <Paper className={classes.upperPaper}>
             <Grid spacing = {8} container>
               <Grid item className= {classes.avartarDiv}>
-                <Avatar className ={classes.avartar} alt="Remy Sharp" src= {`http://localhost:8080/${this.context.state.signInInfo.image}`}/>
+                <Avatar className ={classes.avartar} alt="Remy Sharp" src= {`${apiUrl}/${this.context.state.signInInfo.image}`}/>
               </Grid>
               <Grid item container xs={12} sm className = {classes.infoSpacing}>
                 <Grid item xs container direction="column" spacing={8}>

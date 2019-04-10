@@ -17,6 +17,7 @@ import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import ReactDOM from 'react-dom';
+import { apiUrl } from '../../helpers/apiClient';
 import './Template.css';
 
 const styles = theme => ({
@@ -259,7 +260,7 @@ class Template extends Component {
                         >
                           <div>
                             <img
-                              src={`http://localhost:8080/` + board.imageUrl}
+                              src={`${apiUrl}/${board.imageUrl}`}
                               alt="Testing"
                               width="70%"
                               height="auto"
@@ -303,7 +304,7 @@ class Template extends Component {
                         >
                           <div>
                             <img
-                              src={`http://localhost:8080/` + board.imageUrl}
+                              src={`${apiUrl}/${board.imageUrl}`}
                               alt="Testing"
                               width="70%"
                               height="auto"
@@ -347,7 +348,7 @@ class Template extends Component {
                         >
                           <div>
                             <img
-                              src={`http://localhost:8080/` + board.imageUrl}
+                              src={`${apiUrl}/${board.imageUrl}`}
                               alt="Testing"
                               width="70%"
                               height="auto"

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Page.css';
 import PropTypes from 'prop-types';
 import apiClient from '../../helpers/apiClient';
+import { apiUrl } from '../../helpers/apiClient';
 import InputValidator from '../../helpers/InputValidator';
 import FormChecker from '../../helpers/FormChecker';
 import { withStyles, TextField, Button, Avatar, CssBaseline, Paper, Typography, } from '@material-ui/core';
@@ -367,7 +368,7 @@ class SignUpPage extends Component {
                 className={`${classes.removeLinkDec} ${classes.ButtonMargin} ${
                   classes.ItemCenter
                 }`}
-                href="http://localhost:8080/api/users/google_auth"
+                href={`${apiUrl}/users/google_auth`}
               >
                 <Button
                   variant="contained"
@@ -380,7 +381,7 @@ class SignUpPage extends Component {
                 className={`${classes.removeLinkDec} ${classes.ButtonMargin} ${
                   classes.ItemCenter
                 }`}
-                href="http://localhost:8080/api/users/naver_auth"
+                href={`${apiUrl}/users/naver_auth`}
               >
                 <Button
                   variant="contained"
