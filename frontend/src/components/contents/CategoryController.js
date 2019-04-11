@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import ContentsListViewPage from './ContentsListViewPage';
 
-class ContentsController extends Component {
+class CategoryController extends Component {
   static contextType = AppContext;
 
-  state = {}
+  state = {
+    searchTerm: this.props.match.params.id,
+  };
 
   async componentDidMount() {
-    const contents = await this.context.actions.getContentsNew();
+    const { searchTerm } = this.state;
+    const contents = await this.context.actions.getContentsByCategory(searchTerm);
     this.setState({
       contents,
     });
@@ -28,4 +31,4 @@ class ContentsController extends Component {
   }
 }
 
-export default ContentsController;
+export default CategoryController;

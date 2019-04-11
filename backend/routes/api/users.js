@@ -7,12 +7,13 @@ const mailer = require('../../service/mailer');
 const passport = require('passport');
 const {ensureAuthenticatedErrorMessage,ensureAuthenticatedRedirect} = require('../../config/passport');
 const url = require('url');
+const { clientURI } = require('../../config/keys');
 const router = express.Router();
 let newUser;
 
 // 소셜 로그인 로직
 function socialLoginRedirect(service, req, res, next) {
-  return passport.authenticate(service,async (err, user, info) => {
+  return passport.authenticate(service, async (err, user, info) => {
     const message = encodeURIComponent(info.message);
     const state = encodeURIComponent(info.state);
     const redirectURL = !info.url ? req.session.redirectTo : info.url;
@@ -97,13 +98,13 @@ router.get('/verify',(req, res , next)=>{
       if (err) next(err)
       // redirect 추가
       if (!token){
-        res.send({state: 'fail', message:'해당하는 토큰이 존재하지 않습니다.', url: 'http://localhost:3000'})
+        res.send({state: 'fail', message:'해당하는 토큰이 존재하지 않습니다.', url: `${clientURI}`})
       }
       else{
         User.update({_id: token._id},{ $set: {verified: true}})
           .exec((err,user)=>{
             if (err) next(err);
-            res.send({state: 'success', message:'토큰 인증에 성공했습니다.', url: 'http://localhost:3000'})
+            res.send({state: 'success', message:'토큰 인증에 성공했습니다.', url: `${clientURI}`})
         });
       }
     })

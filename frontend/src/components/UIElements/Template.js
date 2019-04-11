@@ -225,7 +225,7 @@ class Template extends Component {
 
             <Link
               style={{ textDecoration: 'none' }}
-              to={`/category/` + this.state.searchTerm + `/`}
+              to={`/category/` + this.state.searchTerm}
             >
               <Button
                 style={{ height: '4.7vh' }}
@@ -234,7 +234,6 @@ class Template extends Component {
                 className={classes.button}
               >
                 검색
-                {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
               </Button>
             </Link>
             <div>

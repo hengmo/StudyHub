@@ -41,6 +41,7 @@ const styles = theme => ({
 
   page: {
     width: '70vw',
+    height: '60vw',
     minHeight: '60vh',
     margin: '10vh auto',
   },
@@ -68,6 +69,7 @@ const styles = theme => ({
     position: 'fixed',
     bottom: theme.spacing.unit * 10,
     right: theme.spacing.unit * 8,
+    zIndex: 1,
   },
 });
 

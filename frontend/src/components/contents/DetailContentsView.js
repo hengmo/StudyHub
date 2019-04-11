@@ -130,7 +130,6 @@ const DetailContentsView = props => {
     month: 'long',
     day: 'numeric',
   };
-  const test = ['test1', 'test2', 'test3', 'test4', 'test5'];
 
   const userRendering = () => {
     if (loginStatus) {
@@ -214,13 +213,13 @@ const DetailContentsView = props => {
                     </CardContent>
                   </Card>
                 </Grid>
-                {test.map(user => (
-                  <Grid item key={user} sm={6} md={4} lg={3}>
+                {participants.map(user => (
+                  <Grid item key={user.name} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
                       <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/coverimg/defaultAvartar.png`} />
                       <CardContent style={{ textAlign: 'center' }}>
                         <Typography gutterBottom fontWeight="fontWeightMedium">
-                          {user}
+                          {user.name}
                         </Typography>
                         <Typography style={{ fontSize: 15 }}>스터디원</Typography>
                       </CardContent>

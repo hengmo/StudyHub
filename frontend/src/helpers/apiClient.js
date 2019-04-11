@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://18.216.236.158/api';
+const apiUrl = 'http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com/api';
 const methods = ['get', 'post', 'put', 'delete'];
 
 function formatUrl(path) {

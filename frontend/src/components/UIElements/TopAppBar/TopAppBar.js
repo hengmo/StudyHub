@@ -33,9 +33,6 @@ const styles = {
 class TopAppBar extends Component {
   static contextType = AppContext;
 
-  componentWillUnmount() {
-    console.log('top', 'componentWillUnMount');
-  };
   render() {
     const { classes } = this.props;
     const { status: loginStatus } = this.context.state.signInInfo;

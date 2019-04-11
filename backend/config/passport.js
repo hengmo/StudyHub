@@ -5,11 +5,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('../models/Users');
 // Load User Model
+const { clientURI, serverURI } = require('./keys');
 const {GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET} = require('./keys');
 const {NAVER_CLIENT_ID,NAVER_CLIENT_SECRET} = require('./keys');
 
 // Oauth API를 통해 얻은 유저 정보를 바탕으로 로그인, 회원가입을 진행하는 함수이다. 
 function socialLogin (service,profile,done){
+  
   //유저 객체
   let userProfile = {
     email: profile.emails[0].value,
@@ -51,7 +53,7 @@ function socialLogin (service,profile,done){
         //URL필드는 request 이후 어느 페이지로 돌아갈지에 대한 정보를 나타낸다. 
         //null -> 초기 요청 페이지로 돌아간다.(ex. SignInpage에서 요청을 한 경우 SignInpage로 돌아간다.)
         newUser.save()
-          .then(user => done(null,user,{state: 'success', message:'로그인에 성공했습니다.', url: 'http://localhost:3000/'}))
+          .then(user => done(null,user,{state: 'success', message:'로그인에 성공했습니다.', url: `${clientURI}`}))
           .catch(err => done(err,null,{state: 'error', message:'회원 가입중 오류가 발생했습니다.', url: null}));   
 
       }else{
@@ -59,7 +61,7 @@ function socialLogin (service,profile,done){
         if (user.strategy == "local")  // local strategy로 가입한 경우
           done(null,null,{state: 'warning', message:'이미 가입된 아이디입니다.', url: null});
         else // 로그인 성공
-          done(null,user,{state: 'success', message:'로그인에 성공했습니다.', url: 'http://localhost:3000/'});
+          done(null,user,{state: 'success', message:'로그인에 성공했습니다.', url: `${clientURI}`});
       }
     })
     .catch(err => done(err,null,{state: 'error', message:'회원 조회중 오류가 발생했습니다.', url: null}));
@@ -91,7 +93,7 @@ module.exports.initialize = (passport) => {
             if(isMatch) {
               // executing done method -> passport.serializeUser
               // baseurl 로 돌아간다. 
-              return done(null, user, {state: 'success', message: '로그인에 성공했습니다.', url:'http://localhost:3000/'});
+              return done(null, user, {state: 'success', message: '로그인에 성공했습니다.', url:`${clientURI}`});
             } else{
               // 일치하지 않는 경우
               return done(null, null, {state: 'warning', message: '비밀번호가 일치하지 않습니다.', url: null});
@@ -107,7 +109,7 @@ module.exports.initialize = (passport) => {
       new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com/api/users/google_auth/redirect'	
+        callbackURL: `${serverURI}/api/users/google_auth/redirect`
       },
       (accessToken, refreshToken, profile, done) => {
         socialLogin('Google',profile,done);
@@ -120,7 +122,7 @@ module.exports.initialize = (passport) => {
       new NaverStrategy({
         clientID: NAVER_CLIENT_ID,
         clientSecret: NAVER_CLIENT_SECRET,
-        callbackURL: 'http://localhost:8080/api/users/naver_auth/redirect'	
+        callbackURL: `${serverURI}/api/users/naver_auth/redirect`
       },
       (accessToken, refreshToken, profile, done) => {
         socialLogin('Naver',profile,done);
@@ -156,5 +158,5 @@ module.exports.ensureAuthenticatedErrorMessage = (req, res, next) =>{
 module.exports.ensureAuthenticatedRedirect = (req, res, next) =>{
   if (req.user)
     return next();
-  res.redirect('http://localhost:3000');
+  res.redirect(`${clientURI}`);
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import DetailContentsView from './DetailContentsView';
-import LoadingProgress from '../UIElements/LoadingProgress';
 
 /* global naver */
 
@@ -75,9 +74,16 @@ class DetailContentsController extends Component {
     return (
       <div>
         {content ? (
-          <DetailContentsView content={content} participants={participants} signInInfo={signInInfo} joinStudy={this.joinStudy} deleteStudy={this.deleteStudy} leaveStudy={this.leaveStudy} />
+          <DetailContentsView
+            content={content}
+            participants={participants}
+            signInInfo={signInInfo}
+            joinStudy={this.joinStudy}
+            deleteStudy={this.deleteStudy}
+            leaveStudy={this.leaveStudy}
+          />
         ) : (
-          <LoadingProgress />
+          <div style={{ height: 900 }} />
         )}
       </div>
     );

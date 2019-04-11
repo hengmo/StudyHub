@@ -55,7 +55,6 @@ app.use('/api/users',users);
 app.use('/api/messages',messages);
 app.use('/', indexRouter);
 app.use('/api/contents', contents);
-app.use('/api/participants', contents);
 app.use('/coverimg', express.static('coverimg'));
 
 
