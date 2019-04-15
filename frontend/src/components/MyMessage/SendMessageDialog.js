@@ -75,7 +75,6 @@ class SendMessageDialog extends Component {
         vertical: 'bottom',
         horizontal: 'left',});
       if (res.state === 'success')
-        //this.props.handleOpen('snackbar');
         this.props.handleClose('messageSendDialog');
  
     })
@@ -129,7 +128,7 @@ class SendMessageDialog extends Component {
             name = 'sendMessageTo'
             defaultValue = {this.props.initialRecipientEmail}
             className = {classes.dialogTextField}
-            placeholder= "아이디"
+            placeholder= "아이디(이메일)"
             fullWidth
             margin="normal"
             variant="outlined"

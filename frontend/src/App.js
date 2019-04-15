@@ -7,7 +7,7 @@ import PrivateRoute from './helpers/RedirectRoute';
 import SignUpPage from './components/UserPages/SignUpPage';
 import SignInPage from './components/UserPages/SignInPage';
 import MyMessagePage from './components/MyMessage/MyMessagePage';
-import MyPage from './components/MyPage/MyPage';
+import MyPageController from './components/MyPage/MyPageController';
 import Template from './components/UIElements/Template';
 import TopAppBar from './components/UIElements/TopAppBar/TopAppBar';
 import ContentsWritePage from './components/contents/ContentsWritePage';
@@ -54,7 +54,7 @@ class App extends Component {
             <Route path="/signin" component={SignInPage} />
             <Route path="/near" component={NearContentsListView} />
             <Route path="/loading" component={LoadingProgress} />
-            <PrivateRoute path="/mypage" component={MyPage} />
+            <PrivateRoute path="/mypage" component={MyPageController} />
             <PrivateRoute path="/mymessagepage" component={MyMessagePage} />
             <Footer />
           </div>

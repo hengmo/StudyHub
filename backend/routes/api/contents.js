@@ -3,7 +3,7 @@ const router = express.Router();
 const Contents = require('../../models/Contents.js');
 const multer = require('multer');
 const maxSize = 5 * 1024 * 1024;
-const basicImgPath = 'coverImg\\study-basic.jpg';
+const basicImgPath = 'coverimg/study-basic.jpg';
 
 const storage = multer.diskStorage({
     destination(req, file, callback) {
@@ -114,7 +114,7 @@ router.get('/representation2', (req, res, next) => {
   .limit(4);
 });
 
-router.get('/new', (req, res, next) => {
+router.get('/latest', (req, res, next) => {
   Contents.find((err, contents) => {
     if (err) return next(err);
     //console.log(res);

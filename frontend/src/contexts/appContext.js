@@ -53,14 +53,15 @@ export default class AppContextProvider extends Component {
     leaveStudy: detailTerm => apiClient.put(`/contents/leave/${detailTerm}`),
     deleteStudy: detailTerm => apiClient.delete(`/contents/delete/${detailTerm}`),
     getUserInfomations: () => apiClient.get('/users'),
-    getContentsAll: () => apiClient.get('/contents/'),
+    getContentsList: () => apiClient.get('/contents'),
     getContentsRepresentation1: () => apiClient.get('/contents/representation1'),
     getContentsRepresentation2: () => apiClient.get('/contents/representation2'),
-    getContentsNew: () => apiClient.get('/contents/new'),
+    getContentsLatest: () => apiClient.get('/contents/latest'),
     getContentsAttention1: () => apiClient.get('/contents/attention1'),
     getContentsAttention2: () => apiClient.get('/contents/attention2'),
     getContentsByCategory: searchTerm => apiClient.get(`/contents/context/${searchTerm}`), //메인 검색창에서 카테고리 검색 시 데이터 보여줌
     getContentsDetail: detailTerm => apiClient.get(`/contents/detail/${detailTerm}`), //상세내용 보여줌
+    removeUser: () => apiClient.post('/users/delete'),
     getCurrentPosition: () => {
       navigator.geolocation.getCurrentPosition(position => {
         return this.setState({

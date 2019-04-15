@@ -10,6 +10,7 @@ class DetailContentsController extends Component {
   state = {
     detailTerm: this.props.match.params.id,
     signInInfo: {},
+    anchorEl: null,
   };
 
   async componentDidMount() {
@@ -68,9 +69,17 @@ class DetailContentsController extends Component {
     await this.context.actions.deleteStudy(detailTerm);
     this.props.history.push('/');
   };
+  
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   render() {
-    const { content, participants, signInInfo } = this.state;
+    const { content, participants, signInInfo, anchorEl, } = this.state;
     return (
       <div>
         {content ? (
@@ -81,6 +90,9 @@ class DetailContentsController extends Component {
             joinStudy={this.joinStudy}
             deleteStudy={this.deleteStudy}
             leaveStudy={this.leaveStudy}
+            anchorEl={anchorEl}
+            handleClick={this.handleClick}
+            handleClose={this.handleClose}
           />
         ) : (
           <div style={{ height: 900 }} />

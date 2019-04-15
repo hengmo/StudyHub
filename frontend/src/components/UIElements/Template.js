@@ -86,7 +86,7 @@ class Template extends Component {
       users: [],
       contentsRepresentation1: [],
       contentsRepresentation2: [],
-      contentsNew: [],
+      contentsLatest: [],
       contentsAttention1: [],
       contentsAttention2: [],
       searchTerm: '',
@@ -115,7 +115,7 @@ class Template extends Component {
       contentsRepresentation2: await this.context.actions.getContentsRepresentation2(), // 대표 2
 
       // Login
-      contentsNew: await this.context.actions.getContentsNew(), // 최신순
+      contentsLatest: await this.context.actions.getContentsLatest(), // 최신순
       contentsAttention1: await this.context.actions.getContentsAttention1(), // 관심 1
       contentsAttention2: await this.context.actions.getContentsAttention2(), // 관심 2
     });
@@ -241,7 +241,7 @@ class Template extends Component {
                 모집중!!
               </div>
               <Grid container spacing={40}>
-                {this.state.contentsNew.map((board, index) => (
+                {this.state.contentsLatest.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
                       <Card

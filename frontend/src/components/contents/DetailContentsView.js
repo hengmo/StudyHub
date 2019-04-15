@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { withStyles, Button, Typography, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemText, Avatar, Grid } from '@material-ui/core';
+import { withStyles, Button, Typography, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemText, Avatar, Grid, Menu, MenuItem } from '@material-ui/core';
 import classNames from 'classnames';
 import { Group, Place, Update, Category } from '@material-ui/icons';
 import { apiUrl } from '../../helpers/apiClient';
@@ -123,6 +123,9 @@ const DetailContentsView = props => {
     participants,
     leaveStudy,
     deleteStudy,
+    anchorEl,
+    handleClick,
+    handleClose,
   } = props;
   const options = {
     weekday: 'long',
@@ -213,10 +216,29 @@ const DetailContentsView = props => {
                     </CardContent>
                   </Card>
                 </Grid>
+                <div>
+                  <Button
+                    aria-owns={anchorEl ? 'simple-menu' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    Open Menu
+                  </Button>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                  </Menu>
+                </div>
                 {participants.map(user => (
                   <Grid item key={user.name} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
-                      <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/coverimg/defaultAvartar.png`} />
+                      <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/${user.profileImg}`} />
                       <CardContent style={{ textAlign: 'center' }}>
                         <Typography gutterBottom fontWeight="fontWeightMedium">
                           {user.name}
@@ -268,6 +290,9 @@ DetailContentsView.propTypes = {
   participants: propTypes.array.isRequired,
   signInInfo: propTypes.object.isRequired,
   joinStudy: propTypes.func.isRequired,
+  anchorEl: propTypes.bool.isRequired,
+  handleClick: propTypes.func.isRequired,
+  handleClose: propTypes.func.isRequired,
 };
 
 export default withStyles(style)(DetailContentsView);
