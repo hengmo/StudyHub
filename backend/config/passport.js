@@ -44,6 +44,7 @@ function socialLogin (service,profile,done){
   // 로그인 or 회원가입을 요청한 유저의 Email이 DB에 존재하는지 판단한다. 
   User.findOne({email: userProfile.email})
     .then(user => { 
+      console.log('user', user);
       // 회원가입이 되어있지 않은 유저인 경우
       if (!user){
         // 유저 정보를 바탕으로 user model을 만든다.  
@@ -112,6 +113,7 @@ module.exports.initialize = (passport) => {
         callbackURL: `${serverURI}/api/users/google_auth/redirect`
       },
       (accessToken, refreshToken, profile, done) => {
+        console.log('google?');
         socialLogin('Google',profile,done);
         }
       )
@@ -131,17 +133,24 @@ module.exports.initialize = (passport) => {
     );
 
   passport.serializeUser((user, done) =>{
+    console.log('serializeUser');
+    console.log(user);
     // 유저 객체를 통해 회원 신원에 대한 정보를 얻는다. 
     // done -> 다음 단계로 이동한다. 
-    // 쿠키에 user.id를 저장한다. 
-    done(null,user.id);
+    // 세션에 user.id를 저장한다. 
+    done(null,user._id);
   });
 
   passport.deserializeUser((id, done) => {
-    // just retrieving the user id from cookie which a browser sent
-    // 브라우저가 보낸 쿠키에서 user.id에 대한 정보를 얻는다.
+    console.log('deserializeUser');
+    console.log('id1', id);
+  
+    // just retrieving the user _ from cookie which a browser sent
+    // 브라우저가 보낸 세션에서 user.id에 대한 정보를 얻는다.
     // DB에서 해당 유저에 대한 정보를 찾는다.
     User.findById(id, (err, user) => {
+      console.log('id2222', id);
+      console.log('user333333333', user);
       // user: DB에 저장된 user 정보 
       // user 객체를 다음 단계에 전해준다. 
       done(err, user);

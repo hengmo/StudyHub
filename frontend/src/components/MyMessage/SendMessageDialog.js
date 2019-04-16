@@ -25,7 +25,7 @@ const styles = {
   },
 
   dialogBody:{
-    margin: '30px 15px',
+    margin: '20px 15px',
     width: 'calc(100% - 30px)',
   },
 
@@ -102,7 +102,6 @@ class SendMessageDialog extends Component {
 
     return (
         <Dialog
-          fullScreen
           open={this.props.open}
           onClose={()=> this.props.handleClose()}
           TransitionComponent={Transition}
@@ -160,7 +159,7 @@ class SendMessageDialog extends Component {
             label="내용"
             name = 'messageBody'
             multiline
-            rows = "15"
+            rows="12"
             className = {classes.dialogTextField}
             placeholder="내용"
             fullWidth
@@ -185,8 +184,8 @@ class SendMessageDialog extends Component {
 
 SendMessageDialog.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   initialRecipientEmail: PropTypes.string.isRequired,
 };

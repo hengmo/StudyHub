@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
-import MyPageTest from './MyPageTest';
+import MyPageView from './MyPageView';
 
 class MyPageController extends Component {
   static contextType = AppContext;
@@ -14,14 +14,12 @@ class MyPageController extends Component {
     const { signInInfo: { email: loginedUserEmail, } } = this.context.state;
     const contents = await this.context.actions.getContentsList();
     const myStudy = contents.filter(content => content.leader.email === loginedUserEmail);
-    console.log(myStudy);
     const joinedStudy = [];
     contents.map(content => {
       return content.participants.forEach(user => {
         if(user.email === loginedUserEmail) joinedStudy.push(content);
       });
     });
-    console.log(joinedStudy);
     this.setState({
       contents,
       myStudy,
@@ -45,7 +43,7 @@ class MyPageController extends Component {
     return (
       <div>
         {contents ? (
-          <MyPageTest myStudy={myStudy} joinedStudy={joinedStudy} signInInfo={signInInfo} leaveStudy={this.leaveStudy} deleteStudy={this.deleteStudy} />
+          <MyPageView myStudy={myStudy} joinedStudy={joinedStudy} signInInfo={signInInfo} leaveStudy={this.leaveStudy} deleteStudy={this.deleteStudy} />
         ) : (
           <div style={{ height: 900 }} />
         )}

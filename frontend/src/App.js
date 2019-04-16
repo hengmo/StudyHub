@@ -20,6 +20,7 @@ import LoadingProgress from './components/UIElements/LoadingProgress';
 import Footer from './components/UIElements/Footer';
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.loading = false;
@@ -27,6 +28,8 @@ class App extends Component {
   componentDidMount() {
     this.props.actions.checkAuth();
     this.loading = true;
+    
+    this.props.actions.getCurrentPosition();
   }
 
   componentDidUpdate(prevProps) {

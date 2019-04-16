@@ -55,7 +55,7 @@ export default class AppContextProvider extends Component {
     getUserInfomations: () => apiClient.get('/users'),
     getContentsList: () => apiClient.get('/contents'),
     getContentsRepresentation1: () => apiClient.get('/contents/representation1'),
-    getContentsRepresentation2: () => apiClient.get('/contents/representation2'),
+    getContentsByViews: () => apiClient.get('/contents/views'),
     getContentsLatest: () => apiClient.get('/contents/latest'),
     getContentsAttention1: () => apiClient.get('/contents/attention1'),
     getContentsAttention2: () => apiClient.get('/contents/attention2'),

@@ -47,7 +47,6 @@ class AvatarandDropdown extends React.Component {
   }
 
   handleClick = event => {
-    console.log(event.currentTarget)
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -56,7 +55,6 @@ class AvatarandDropdown extends React.Component {
   };
 
   handleSelect = (option) => {
-    console.log(option)
     if (option === 'mypage'){
       this.props.history.push('/mypage')
     } else if (option === 'mymessage') {

@@ -140,11 +140,9 @@ class MyMessagePage extends Component {
     if (!this.context.state.signInInfo.status || this.context.state.signInInfo.id !== data.recipient) return true;
 
     this.getMessagesApi(this.state.messagePagerInfo, 'changeTotal', 1);
-    //.then(res => {console.log(res);this.context.actions.snackbarOpenHandler('메시지가 도착했습니다.','info');} );
   }
 
   getSelectedMessages(event, messageKey) {
-    console.log(messageKey);
     let checkedMessages = this.state.selectedElements;
 
     // 체크했을 때
@@ -162,7 +160,6 @@ class MyMessagePage extends Component {
   }
 
   changeSeen(expanded, listIdx, seen) {
-    console.log('changeseen');
     if (expanded && !seen) {
       setTimeout(() => {
         apiClient
@@ -220,7 +217,6 @@ class MyMessagePage extends Component {
   }
 
   componentWillUnmount() {
-    console.log('unmount');
     // 핸들러 해제
     if (this.context.state.socketConnection.io) this.context.state.socketConnection.io.off('getmessage');
     //this.context.state.socketConnection.io.removeListener('unseenMessage',this.getUnseenMessage);
@@ -237,7 +233,6 @@ class MyMessagePage extends Component {
   }
 
   removeMessages() {
-    console.log(this.state.selectedElements);
     apiClient
       .post('/messages/remove', this.state.selectedElements)
       .then(res => {

@@ -14,6 +14,9 @@ let newUser;
 // 소셜 로그인 로직
 function socialLoginRedirect(service, req, res, next) {
   return passport.authenticate(service, async (err, user, info) => {
+    console.log('service', service);
+    console.log('users.js의 user', user);
+    console.log('users.js의 session', req.session);
     const message = encodeURIComponent(info.message);
     const state = encodeURIComponent(info.state);
     const redirectURL = !info.url ? req.session.redirectTo : info.url;
@@ -140,6 +143,7 @@ router.get('/session',(req, res, next)=>{
 //If user is logged in, passport.js will create user object in req for every request in express.js,
 //which you can check for existence in any middleware:
 router.post('/checkAuth',(req, res, next )=>{
+  console.log('checkAuth의 session', req.session);
   if (req.user){
     res.json({
       status : true,
@@ -170,10 +174,8 @@ router.post('/signout',(req, res, next)=>{
 });
 
 router.post('/delete', ensureAuthenticatedErrorMessage ,async (req, res, next)=>{
-  console.log("delete");
-
   const app = await User.findOne({ _id: req.user._id}).exec();
-  await app.remove(); //prints 'pre remove'
+  await app.remove();
 });
 
 router.get('/google_auth',(req, res, next)=>{

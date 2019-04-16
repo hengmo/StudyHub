@@ -103,14 +103,14 @@ router.get('/representation1', (req, res, next) => {
     .limit(4);
 });
 
-router.get('/representation2', (req, res, next) => {
+//조회순 스터디
+router.get('/views', (req, res, next) => {
   Contents.find((err, contents) => {
     if (err) return next(err);
     //console.log(res);
     res.json(contents);
   })
   .sort({views : -1})
-  .where('categories').in(['영어'])
   .limit(4);
 });
 

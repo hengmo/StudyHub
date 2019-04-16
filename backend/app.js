@@ -29,7 +29,7 @@ app.use(cors({
 const sessionMiddleware = session({
   secret: 'secret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
 });
 app.use(sessionMiddleware);
 
@@ -55,27 +55,13 @@ app.use('/api/users',users);
 app.use('/api/messages',messages);
 app.use('/', indexRouter);
 app.use('/api/contents', contents);
-app.use('/coverimg', express.static('coverimg'));
+app.use('/api/coverimg', express.static('coverimg'));
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-
-// error handler
-/*
-template engine 과 관련된 에러 -> 일단 주석처리
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-*/
 
 module.exports.app = app;
 module.exports.sessionMiddleware = sessionMiddleware;

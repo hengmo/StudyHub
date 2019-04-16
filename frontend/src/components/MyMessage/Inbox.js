@@ -96,7 +96,7 @@ class Inbox extends Component {
           </Typography>
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
-          <Button onClick={() =>this.props.handleOpen(this.props.sender.email)}variant="contained" size= "small" color="primary" className ={classes.button}>답장</Button>
+          <Button onClick={() =>this.props.handleOpen(this.props.sender.email)} variant="contained" size= "small" color="primary" className ={classes.button}>답장</Button>
         </ExpansionPanelActions>
         </ExpansionPanel>
       </ListItem>

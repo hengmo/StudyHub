@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ReactDOM from 'react-dom';
 import { apiUrl } from '../../helpers/apiClient';
 import './Template.css';
+/* global naver */
 
 const styles = theme => ({
   default: {
@@ -84,9 +85,10 @@ class Template extends Component {
 
     this.state = {
       users: [],
-      contentsRepresentation1: [],
-      contentsRepresentation2: [],
+      contents: [],
+      contentsByDistance: [],
       contentsLatest: [],
+      contentsByViews: [],
       contentsAttention1: [],
       contentsAttention2: [],
       searchTerm: '',
@@ -101,25 +103,54 @@ class Template extends Component {
     this.setState({ values: this.state.values + 1 });
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.state.values === nextState.values ||
-      this.state.searchTerm === nextState.searchTerm
-    );
+    return this.state.values === nextState.values || this.state.searchTerm === nextState.searchTerm;
   }
 
   async componentDidMount() {
-    this.context.actions.getCurrentPosition();
+    const { lat, lng } = this.context.state;
+    const currentLatLng = new naver.maps.LatLng(lat, lng);
+    const addresses = await this.getAddressesByLatLng(currentLatLng);
+    const currentAddress = addresses[0].split(' ').slice(0, 2).join(' ');
+    
+    const contents = await this.context.actions.getContentsList();
+    const contentsByDistance = contents.filter(content => content.studyLocation.split(' ').slice(0, 2).join(' ') === currentAddress);
+    
     this.setState({
       labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
-      contentsRepresentation1: await this.context.actions.getContentsRepresentation1(), // 대표 1
-      contentsRepresentation2: await this.context.actions.getContentsRepresentation2(), // 대표 2
-
-      // Login
       contentsLatest: await this.context.actions.getContentsLatest(), // 최신순
+      contentsByDistance: contentsByDistance, //거리순
+      contentsByViews: await this.context.actions.getContentsByViews(), // 조회순
       contentsAttention1: await this.context.actions.getContentsAttention1(), // 관심 1
       contentsAttention2: await this.context.actions.getContentsAttention2(), // 관심 2
     });
-  }
+  };
+
+  getAddressesByLatLng = latlng => {
+    const tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
+
+    return new Promise((resolve, reject) => {
+      naver.maps.Service.reverseGeocode(
+        {
+          location: tm128,
+          coordType: naver.maps.Service.CoordType.TM128,
+        },
+        (status, response) => {
+          if (status === naver.maps.Service.Status.ERROR) {
+            return reject(alert('지도 API 오류입니다.'));
+          }
+
+          const { items } = response.result;
+          const addresses = [];
+
+          for (let i = 0, ii = items.length, item; i < ii; i++) {
+            item = items[i];
+            addresses.push(item.address);
+          }
+          return resolve(addresses);
+        },
+      );
+    });
+  };
 
   handleChange = event => {
     this.setState(
@@ -133,11 +164,14 @@ class Template extends Component {
     );
   };
   openSnackbar = () => {
-    const { signInInfo: { status: loginStatus }} = this.context.state;
-    if(!loginStatus) this.context.actions.snackbarOpenHandler('먼저 회원등록을 해주세요.');
+    const {
+      signInInfo: { status: loginStatus },
+    } = this.context.state;
+    if (!loginStatus) this.context.actions.snackbarOpenHandler('먼저 회원등록을 해주세요.', 'warning');
   };
 
   render() {
+    const { contentsLatest, contentsByDistance, contentsByViews, } = this.state;
     const { lat, lng } = this.context.state;
     const { classes } = this.props;
 
@@ -149,10 +183,7 @@ class Template extends Component {
               <source type="video/mp4" data-reactid=".0.1.0.0.0" src={movie} />
             </video>
             <div className={classes.textButtonContainer}>
-              <Typography
-                variant="h4"
-                style={{ color: 'white', fontWeight: 600 }}
-              >
+              <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
                 함께 하는 스터디의 동기부여
               </Typography>
               <Typography variant="h6" style={{ color: 'white' }}>
@@ -185,11 +216,7 @@ class Template extends Component {
         </div>
         <div className={classes.mainContainer}>
           <div className={classNames(classes.layout, classes.cardGrid)}>
-            <FormControl
-              style={{ width: '25vh' }}
-              variant="outlined"
-              className={classes.formControl}
-            >
+            <FormControl style={{ width: '25vh' }} variant="outlined" className={classes.formControl}>
               <InputLabel
                 ref={ref => {
                   this.InputLabelRef = ref;
@@ -201,13 +228,7 @@ class Template extends Component {
               <Select
                 value={this.state.searchTerm}
                 onChange={this.handleChange}
-                input={
-                  <OutlinedInput
-                    labelWidth={this.state.labelWidth}
-                    name="category"
-                    id="outlined-age-simple"
-                  />
-                }
+                input={<OutlinedInput labelWidth={this.state.labelWidth} name="category" id="outlined-age-simple" />}
               >
                 <MenuItem value={'영어'}>영어</MenuItem>
                 <MenuItem value={'일본어'}>일본어</MenuItem>
@@ -223,31 +244,18 @@ class Template extends Component {
               </Select>
             </FormControl>
 
-            <Link
-              style={{ textDecoration: 'none' }}
-              to={`/category/` + this.state.searchTerm}
-            >
-              <Button
-                style={{ height: '4.7vh' }}
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
+            <Link style={{ textDecoration: 'none' }} to={`/category/` + this.state.searchTerm}>
+              <Button style={{ height: '4.7vh' }} variant="contained" color="primary" className={classes.button}>
                 검색
               </Button>
             </Link>
             <div>
-              <div style={{ textAlign: 'right', marginBottom: '3vh' }}>
-                모집중!!
-              </div>
+              <div style={{ textAlign: 'right', marginBottom: '3vh' }}>모집중!!</div>
               <Grid container spacing={40}>
-                {this.state.contentsLatest.map((board, index) => (
+                {contentsLatest.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card
-                        className={classes.card}
-                        style={{ minHeight: '38vh' }}
-                      >
+                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -258,19 +266,12 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img
-                              src={`${apiUrl}/${board.imageUrl}`}
-                              alt="Testing"
-                              width="70%"
-                              height="auto"
-                            />
+                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>
-                              {board.title}
-                            </div>
+                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>
@@ -281,17 +282,13 @@ class Template extends Component {
                 ))}
               </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>
-                관심 카테고리 Ⅰ
-              </div>
+              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>거리순</div>
+              {contentsByDistance.length === 0 && <div style={{ textAlign: 'right', margin: '2vh 0 6vh 0 ' }}>가까운 거리의 스터디가 없습니다.</div>}
               <Grid container spacing={40}>
-                {this.state.contentsAttention1.map((board, index) => (
+                {contentsByDistance.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card
-                        className={classes.card}
-                        style={{ minHeight: '38vh' }}
-                      >
+                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -302,19 +299,12 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img
-                              src={`${apiUrl}/${board.imageUrl}`}
-                              alt="Testing"
-                              width="70%"
-                              height="auto"
-                            />
+                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>
-                              {board.title}
-                            </div>
+                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>
@@ -325,17 +315,12 @@ class Template extends Component {
                 ))}
               </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>
-                관심 카테고리 Ⅱ
-              </div>
+              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>조회순</div>
               <Grid container spacing={40}>
-                {this.state.contentsAttention2.map((board, index) => (
+                {contentsByViews.map((board, index) => (
                   <Grid item key={index} sm={6} md={3} lg={3}>
                     <div className="mediaQuery">
-                      <Card
-                        className={classes.card}
-                        style={{ minHeight: '38vh' }}
-                      >
+                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
                         <div key={index} />
                         <Button
                           style={{ width: '100%', height: '20vh' }}
@@ -346,19 +331,12 @@ class Template extends Component {
                           }}
                         >
                           <div>
-                            <img
-                              src={`${apiUrl}/${board.imageUrl}`}
-                              alt="Testing"
-                              width="70%"
-                              height="auto"
-                            />
+                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
                           </div>
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>
-                              {board.title}
-                            </div>
+                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
                           </Typography>
                           <Typography>{board.categories + ''}</Typography>
                         </CardContent>
