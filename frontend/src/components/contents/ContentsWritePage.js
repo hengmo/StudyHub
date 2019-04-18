@@ -63,6 +63,7 @@ const styles = theme => ({
   naverMap: {
     width: '100%',
     height: 550,
+    maxHeight: 550,
     marginBottom: 10,
   },
   addressSelection: {
@@ -80,7 +81,7 @@ class ContentsWritePage extends Component {
 
   state = {
     title: '',
-    categories: ['영어', '일본어', '중국어', '회화', '취업준비', '면접', '자기소개서', '프로젝트', '코딩 테스트', '전공', '인적성/NCS'],
+    categories: ['영어', '일본어', '중국어', '회화', '취업준비', '면접', '자기소개서', '프로젝트', '코딩 테스트', '전공', '인적성&NCS'],
     selectedCategories: [],
     description: '',
     addresses: [],
@@ -131,6 +132,9 @@ class ContentsWritePage extends Component {
 
       await this.context.actions.addContents(formData);
       this.props.history.push('/');
+    }
+    else {
+      this.context.actions.snackbarOpenHandler('스터디 정보를 모두 작성 해주세요.', 'warning');
     }
   };
 
@@ -266,6 +270,7 @@ class ContentsWritePage extends Component {
             <div className={classes.inputContainer}>
               <Typography className={classes.inputText}>스터디 커버 이미지</Typography>
               <input type="file" id="coverImg" multiple />
+              <Typography style={{ fontSize: 14, }}>(미 선택시 기본 이미지 적용)</Typography>
             </div>
             <Button className={classes.button} variant="contained" color="primary" onClick={this.addContents}>
               스터디 작성

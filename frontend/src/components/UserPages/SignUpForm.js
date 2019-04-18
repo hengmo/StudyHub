@@ -6,9 +6,9 @@ import { apiUrl } from '../../helpers/apiClient';
 import InputValidator from '../../helpers/InputValidator';
 import FormChecker from '../../helpers/FormChecker';
 import { withStyles, TextField, Button, Avatar, CssBaseline, Paper, Typography, } from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
 import { AppContext } from '../../contexts/appContext';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { green, red } from '@material-ui/core/colors';
 
 const styles = theme => ({
   container: {
@@ -72,7 +72,7 @@ const styles = theme => ({
   },
   NaverCol: {
     color: 'white',
-    backgroundColor: green[600],
+    backgroundColor: '#1EC800',
     '&:hover': {
       backgroundColor: green[800],
     },
@@ -382,7 +382,7 @@ class SignUpPage extends Component {
                   classes.ItemCenter
                 }`}
                 href={`${apiUrl}/users/naver_auth`}
-              >
+              > 
                 <Button
                   variant="contained"
                   className={`${classes.NaverCol} ${classes.Button}`}

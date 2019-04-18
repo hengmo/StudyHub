@@ -71,7 +71,7 @@ const styles = theme => ({
   },
   NaverCol: {
     color: 'white',
-    backgroundColor: green[600],
+    backgroundColor: '#1EC800',
     '&:hover': {
       backgroundColor: green[800],
     },

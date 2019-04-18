@@ -54,11 +54,8 @@ export default class AppContextProvider extends Component {
     deleteStudy: detailTerm => apiClient.delete(`/contents/delete/${detailTerm}`),
     getUserInfomations: () => apiClient.get('/users'),
     getContentsList: () => apiClient.get('/contents'),
-    getContentsRepresentation1: () => apiClient.get('/contents/representation1'),
     getContentsByViews: () => apiClient.get('/contents/views'),
     getContentsLatest: () => apiClient.get('/contents/latest'),
-    getContentsAttention1: () => apiClient.get('/contents/attention1'),
-    getContentsAttention2: () => apiClient.get('/contents/attention2'),
     getContentsByCategory: searchTerm => apiClient.get(`/contents/context/${searchTerm}`), //메인 검색창에서 카테고리 검색 시 데이터 보여줌
     getContentsDetail: detailTerm => apiClient.get(`/contents/detail/${detailTerm}`), //상세내용 보여줌
     removeUser: () => apiClient.post('/users/delete'),
@@ -76,7 +73,6 @@ export default class AppContextProvider extends Component {
         .post('/users/checkAuth')
         .then(res => ({ status: res.status, id: res.id, email: res.email, image: res.image, name: res.name, date: res.date }))
         .then(user => {
-          console.log(user);
           let io = this.state.socketConnection.io;
           const signInStatus = user.status;
 
@@ -99,7 +95,7 @@ export default class AppContextProvider extends Component {
           } else {
             // 새로 로그인을 하는 경우
             if (!this.state.signInInfo.status) {
-              io = socketIOClient('http://18.216.236.158');
+              io = socketIOClient('http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com');
               io.on('unseenMessage', data => {
                 console.log('unseenmessage');
                 if (data.recipient !== this.state.signInInfo.id) return;

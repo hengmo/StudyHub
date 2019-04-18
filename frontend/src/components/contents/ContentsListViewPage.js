@@ -35,7 +35,7 @@ const styles = theme => ({
 const ContentsListViewPage = props => {
   const { classes, contents } = props;
   return (
-    <main>
+    <main className={classes.root}>
       <div className={classNames(classes.layout, classes.cardGrid)}>
         <Grid container spacing={40}>
           {contents.map(content => (

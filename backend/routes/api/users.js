@@ -14,9 +14,6 @@ let newUser;
 // 소셜 로그인 로직
 function socialLoginRedirect(service, req, res, next) {
   return passport.authenticate(service, async (err, user, info) => {
-    console.log('service', service);
-    console.log('users.js의 user', user);
-    console.log('users.js의 session', req.session);
     const message = encodeURIComponent(info.message);
     const state = encodeURIComponent(info.state);
     const redirectURL = !info.url ? req.session.redirectTo : info.url;
@@ -143,7 +140,6 @@ router.get('/session',(req, res, next)=>{
 //If user is logged in, passport.js will create user object in req for every request in express.js,
 //which you can check for existence in any middleware:
 router.post('/checkAuth',(req, res, next )=>{
-  console.log('checkAuth의 session', req.session);
   if (req.user){
     res.json({
       status : true,
@@ -192,7 +188,7 @@ router.get('/naver_auth',(req, res, next)=>{
   passport.authenticate('naver')(req,res,next);
 });
 
-router.get('/naver_auth/redirect',(req, res, next) =>{
+router.get('/naver_auth/redirect',(req, res, next) => {
   socialLoginRedirect('naver', req, res, next)
 });
 

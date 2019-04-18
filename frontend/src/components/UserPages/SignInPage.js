@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import SignInForm from './SignInForm';
-import { AppContext } from '../../contexts/appContext';
 
 class SignInPage extends Component {
-    static contextType = AppContext;
     
     constructor(props){
       super(props);
@@ -12,8 +10,7 @@ class SignInPage extends Component {
       };
     }
     componentDidMount() {
-      this.context.actions.checkAuth()
-      .then(this.setState({...this.state,loading: false}));
+      this.setState({...this.state,loading: false});
     }
 
     render () {

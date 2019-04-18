@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Contents = require('../../models/Contents.js');
 const multer = require('multer');
-const maxSize = 5 * 1024 * 1024;
+const maxSize = 10 * 1024 * 1024;
 const basicImgPath = 'coverimg/study-basic.jpg';
 
 const storage = multer.diskStorage({
@@ -121,27 +121,6 @@ router.get('/latest', (req, res, next) => {
     res.json(contents);
   })
   .sort({id : -1})
-  .limit(4);
-});
-
-router.get('/attention1', (req, res, next) => {
-  Contents.find((err, contents) => {
-    if (err) return next(err);
-    //console.log(res);
-    res.json(contents);
-  })
-  // .sort({createdAt : 1})
-  .limit(4);
-});
-
-router.get('/attention2', (req, res, next) => {
-  Contents.find((err, contents) => {
-    if (err) return next(err);
-    //console.log(res);
-    res.json(contents);
-  })
-  // .sort({views : -1})
-  // .where('category').in(['면접'])
   .limit(4);
 });
 

@@ -25,16 +25,14 @@ const styles = theme => ({
   default: {
     color: '#90CAF9',
   },
-  appBar: {},
   icon: {
     marginRight: theme.spacing.unit * 2,
   },
-  heroUnit: {},
-  heroContent: {},
   textButtonContainer: {
     position: 'relative',
     width: '100%',
     height: 340,
+    maxHeight: 340,
     marginTop: -730,
     zIndex: 10,
   },
@@ -89,8 +87,6 @@ class Template extends Component {
       contentsByDistance: [],
       contentsLatest: [],
       contentsByViews: [],
-      contentsAttention1: [],
-      contentsAttention2: [],
       searchTerm: '',
       values: 0,
       labelWidth: 0,
@@ -120,8 +116,6 @@ class Template extends Component {
       contentsLatest: await this.context.actions.getContentsLatest(), // 최신순
       contentsByDistance: contentsByDistance, //거리순
       contentsByViews: await this.context.actions.getContentsByViews(), // 조회순
-      contentsAttention1: await this.context.actions.getContentsAttention1(), // 관심 1
-      contentsAttention2: await this.context.actions.getContentsAttention2(), // 관심 2
     });
   };
 
@@ -240,7 +234,7 @@ class Template extends Component {
                 <MenuItem value={'프로젝트'}>프로젝트</MenuItem>
                 <MenuItem value={'코딩 테스트'}>코딩 테스트</MenuItem>
                 <MenuItem value={'전공'}>전공</MenuItem>
-                <MenuItem value={'인적성/NCS'}>인적성/NCS</MenuItem>
+                <MenuItem value={'인적성&NCS'}>인적성&NCS</MenuItem>
               </Select>
             </FormControl>
 

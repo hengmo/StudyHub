@@ -107,6 +107,7 @@ const style = theme => ({
   naverMap: {
     width: '100%',
     height: 350,
+    maxHeight: 350,
   },
   layout: {
     width: 'auto',
@@ -160,13 +161,14 @@ class DetailContentsView extends Component {
     );
   };
 
-  handleOpen = (receiver) => {
-    const { signInInfo: { status: loginStatus } } = this.props;
+  handleOpen = receiver => {
+    const {
+      signInInfo: { status: loginStatus },
+    } = this.props;
     console.log(receiver);
-    if(!loginStatus) { 
-      this.context.actions.snackbarOpenHandler('먼저 로그인 해주세요.', 'warning'); 
-    }
-    else this.setState({ ...this.state, sendMessageTo: receiver, messageSendDialogOpen: true }, this.sendMessageDialog.setToInitialState(receiver));
+    if (!loginStatus) {
+      this.context.actions.snackbarOpenHandler('먼저 로그인 해주세요.', 'warning');
+    } else this.setState({ ...this.state, sendMessageTo: receiver, messageSendDialogOpen: true }, this.sendMessageDialog.setToInitialState(receiver));
   };
 
   userRendering = () => {
@@ -249,7 +251,12 @@ class DetailContentsView extends Component {
           <div className={classes.mainContainer}>
             <div className={classes.detailContainer}>
               <Card className={classes.detailContent}>
-                <CardMedia component="img" alt="coverImg" style={{ width: '100%', height: '45vh' }} src={`${apiUrl}/${content.imageUrl}`} />
+                <CardMedia
+                  component="img"
+                  alt="coverImg"
+                  style={{ width: '100%', maxWidth: 554, height: '45vh', maxHeight: 342 }}
+                  src={`${apiUrl}/${content.imageUrl}`}
+                />
               </Card>
               <div className={classes.detailContent}>
                 <Typography variant="h5" style={{ marginBottom: 15 }}>
@@ -290,10 +297,19 @@ class DetailContentsView extends Component {
                     {participants.map(user => (
                       <Grid item key={user.name} sm={6} md={4} lg={3}>
                         <Card className={classes.card}>
-                          <Button aria-owns={anchorParticipantsEl ? 'participants-menus' : undefined} aria-haspopup="true" onClick={this.participantMenusOpen}>
+                          <Button
+                            aria-owns={anchorParticipantsEl ? 'participants-menus' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.participantMenusOpen}
+                          >
                             <Avatar style={{ width: 73, height: 73, marginTop: 12 }} src={`${apiUrl}/${user.profileImg}`} />
                           </Button>
-                          <Menu id="participants-menus" anchorEl={anchorParticipantsEl} open={Boolean(anchorParticipantsEl)} onClose={this.handleClose}>
+                          <Menu
+                            id="participants-menus"
+                            anchorEl={anchorParticipantsEl}
+                            open={Boolean(anchorParticipantsEl)}
+                            onClose={this.handleClose}
+                          >
                             <MenuItem onClick={() => this.handleOpen(user.email)}>쪽지 보내기</MenuItem>
                           </Menu>
                           <CardContent style={{ textAlign: 'center' }}>
