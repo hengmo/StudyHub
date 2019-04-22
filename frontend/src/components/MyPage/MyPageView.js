@@ -24,6 +24,7 @@ const styles = theme => ({
   },
   userInformPaper: {
     width: '92%',
+    maxWidth: 980,
     height: '100%',
     display: 'flex',
     justifyContent: 'center',

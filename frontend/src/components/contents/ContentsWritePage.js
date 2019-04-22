@@ -4,7 +4,6 @@ import queryString from 'query-string';
 import { withStyles, Paper, TextField, Button, Typography, OutlinedInput, Select, MenuItem, FormControl, Checkbox, FormGroup, FormControlLabel, InputLabel } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import studyBackgroundImg from '../../images/study-background.jpg';
-
 /* global naver */
 
 const styles = theme => ({
@@ -13,7 +12,7 @@ const styles = theme => ({
   },
   topImg: {
     width: '100%',
-    height: 285,
+    maxHeight: 360,
     position: 'relative',
   },
   topTitleContainer: {
@@ -112,6 +111,9 @@ class ContentsWritePage extends Component {
     const { title, selectedCategories: categories, description, selectedLocation: studyLocation } = this.state;
     const { name: leader, email, image: profileImg } = this.context.state.signInInfo;
     const coverImg = document.getElementById('coverImg').files[0];
+
+    if(coverImg && coverImg.type !== 'image/png' && coverImg.type !== 'image/jpeg' && coverImg.type !== 'image/bmp')
+      return this.context.actions.snackbarOpenHandler('이미지 파일 형식이 아닙니다.', 'warning');
 
     if (title !== '' && categories !== '' && description !== '' && studyLocation !== '') {
       const dataInObject = {

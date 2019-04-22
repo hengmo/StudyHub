@@ -97,7 +97,6 @@ export default class AppContextProvider extends Component {
             if (!this.state.signInInfo.status) {
               io = socketIOClient('http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com');
               io.on('unseenMessage', data => {
-                console.log('unseenmessage');
                 if (data.recipient !== this.state.signInInfo.id) return;
                 console.log('only for' + this.state.signInInfo.email);
                 this.actions.getUnseenMessage();

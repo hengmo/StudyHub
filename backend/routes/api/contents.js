@@ -2,29 +2,32 @@ const express = require('express');
 const router = express.Router();
 const Contents = require('../../models/Contents.js');
 const multer = require('multer');
-const maxSize = 10 * 1024 * 1024;
+const maxSize = 50 * 1024 * 1024;
 const basicImgPath = 'coverimg/study-basic.jpg';
+const imagemin = require('imagemin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+
 
 const storage = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './coverimg/');
-    },
-    filename(req, file, callback) {
-        callback(null, Date.now() + '-' + file.originalname);
-        
-    }
+  destination(req, file, callback) {
+    callback(null, './coverimg/');
+  },
+  filename(req, file, callback) {
+    callback(null, Date.now() + '-' + file.originalname);
+  }
 });
+
 const upload = multer({
-    storage: storage, 
-    limits : { fileSize : maxSize },
-    fileFilter : (req, file, callback) => {
-      if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/bmp') {
-        console.log(file);
-        req.fileValidationError = '이미지 파일 형식이 아닙니다.';
-        return callback(null, false, new Error('이미지 파일 형식이 아닙니다.'));
-      }
-      callback(null, true);
+  storage: storage, 
+  limits : { fileSize : maxSize },
+  fileFilter : (req, file, callback) => {
+    if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/bmp') {
+      req.fileValidationError = '이미지 파일 형식이 아닙니다.';
+      return callback(null, false, new Error('이미지 파일 형식이 아닙니다.'));
     }
+    callback(null, true);
+  }
 }).single('coverImg');
 
 /* GET ALL Contents */
@@ -37,21 +40,33 @@ router.get('/', (req, res, next) => {
 
 /* SAVE Contents formData로 들어온 데이터 저장 + imageUrl스키마 필드에 파일 경로 저장*/
 router.post('/', upload, (req, res, next) => {
-  const imageUrl = req.file ? req.file.path : basicImgPath;
-  const leader = {
-    name: req.body.leader,
-    email: req.body.email,
-    profileImg: req.body.profileImg,
-  };
-  Contents.create({ ...req.body, categories: req.body.categories.split(","), imageUrl: imageUrl, leader: leader }, (err, contents) => {
-    if (err) return next(err);
-    else if(req.file) {
-      upload(req, res, () => {
-        if(req.fileValidationError) return res.send(req.fileValidationError);
-        else return res.send('/coverimg/' + req.file.filename);
-      });
-    }
-    else res.json(contents);
+  //이미지파일 압축
+  (async () => {
+    const files = await imagemin([req.file.path], 'coverimg/', {
+      plugins: [
+        imageminMozjpeg({quality: 50}),
+        imageminPngquant({
+          quality: [0.6, 0.8]
+        })
+      ]
+    });
+    console.log(files);
+  })();
+  let contents = new Contents({
+    title: req.body.title,
+    categories: req.body.categories.split(","),
+    description: req.body.description,
+    studyLocation: req.body.studyLocation,
+    imageUrl: req.file ? req.file.path : basicImgPath,
+    leader: {
+      name: req.body.leader,
+      email: req.body.email,
+      profileImg: req.body.profileImg,
+    },
+  });
+  contents.save((err, contents) => {
+    if(err) return next(err);
+    return res.json(contents);
   });
 });
 

@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -63,6 +64,8 @@ const styles = theme => ({
     flexDirection: 'column',
   },
   cardMedia: {
+    width: '90%',
+    height: '100%',
     paddingTop: '56.25%',
   },
   cardContent: {
@@ -259,9 +262,7 @@ class Template extends Component {
                             this.props.history.push(path);
                           }}
                         >
-                          <div>
-                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
-                          </div>
+                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
@@ -292,9 +293,7 @@ class Template extends Component {
                             this.props.history.push(path);
                           }}
                         >
-                          <div>
-                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
-                          </div>
+                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
@@ -324,9 +323,7 @@ class Template extends Component {
                             this.props.history.push(path);
                           }}
                         >
-                          <div>
-                            <img src={`${apiUrl}/${board.imageUrl}`} alt="Testing" width="70%" height="auto" />
-                          </div>
+                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
                         </Button>
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">

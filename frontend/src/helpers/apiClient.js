@@ -22,7 +22,7 @@ class ApiClient {
           })
           .catch(err => {
             const response = err.response;
-            reject({statusCode : response.status, ...response.data});
+            reject({statusCode : response.status, message: response.data});
           });
       });
       return this[method];

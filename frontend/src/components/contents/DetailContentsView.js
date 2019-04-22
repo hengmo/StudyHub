@@ -254,7 +254,7 @@ class DetailContentsView extends Component {
                 <CardMedia
                   component="img"
                   alt="coverImg"
-                  style={{ width: '100%', maxWidth: 554, height: '45vh', maxHeight: 342 }}
+                  style={{ width: '100%', height: '45vh', }}
                   src={`${apiUrl}/${content.imageUrl}`}
                 />
               </Card>
@@ -325,7 +325,7 @@ class DetailContentsView extends Component {
                 </div>
               </div>
             </div>
-            <Card style={{ width: '33%', height: '80%' }}>
+            <Card style={{ width: '33%', height: '80%', maxWidth: 373, }}>
               <CardContent style={{ padding: 0 }}>
                 <List style={{ minWidth: 180 }}>
                   <ListItem>
