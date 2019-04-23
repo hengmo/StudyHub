@@ -22,7 +22,6 @@ const styles = theme => ({
 	},
 	text: {
 		color: '#B4B7BB',
-		fontWeight: 600,
 		display: 'flex',
 	},
 	favoriteIcon: {
@@ -36,7 +35,7 @@ const Footer = (props) => {
 		<div className={classes.root}>
 			<div className={classes.container}>
 				<Typography className={classes.text} variant="h5">StudyHub Web Dev Project.</Typography>
-				<Typography className={classes.text}><Favorite className={classes.favoriteIcon}/>Copyright © 2019. StudyHub(Yu JaeSeo, Jeong JinLee, Choi JunSung). All right reserved.<Favorite className={classes.favoriteIcon}/></Typography>
+				<Typography className={classes.text} style={{ fontSize: 15, }}><Favorite className={classes.favoriteIcon}/>Copyright © 2019. StudyHub(Yu JaeSeo, Jeong JinLee, Choi JunSung). All right reserved.<Favorite className={classes.favoriteIcon}/></Typography>
 			</div>
 		</div>
 	);

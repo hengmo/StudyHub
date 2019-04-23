@@ -1,23 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import movie from '../../images/main-video.mp4';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, withStyles, InputLabel, FormControl, Select, OutlinedInput, MenuItem } from '@material-ui/core';
 import { AppContext } from '../../contexts/appContext';
-import { Link } from 'react-router-dom';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import MenuItem from '@material-ui/core/MenuItem';
-import ReactDOM from 'react-dom';
 import { apiUrl } from '../../helpers/apiClient';
 import './Template.css';
 /* global naver */
@@ -109,18 +97,27 @@ class Template extends Component {
     const { lat, lng } = this.context.state;
     const currentLatLng = new naver.maps.LatLng(lat, lng);
     const addresses = await this.getAddressesByLatLng(currentLatLng);
-    const currentAddress = addresses[0].split(' ').slice(0, 2).join(' ');
-    
+    const currentAddress = addresses[0]
+      .split(' ')
+      .slice(0, 2)
+      .join(' ');
+
     const contents = await this.context.actions.getContentsList();
-    const contentsByDistance = contents.filter(content => content.studyLocation.split(' ').slice(0, 2).join(' ') === currentAddress);
-    
+    const contentsByDistance = contents.filter(
+      content =>
+        content.studyLocation
+          .split(' ')
+          .slice(0, 2)
+          .join(' ') === currentAddress,
+    );
+
     this.setState({
       labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
       contentsLatest: await this.context.actions.getContentsLatest(), // 최신순
       contentsByDistance: contentsByDistance, //거리순
       contentsByViews: await this.context.actions.getContentsByViews(), // 조회순
     });
-  };
+  }
 
   getAddressesByLatLng = latlng => {
     const tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
@@ -168,7 +165,7 @@ class Template extends Component {
   };
 
   render() {
-    const { contentsLatest, contentsByDistance, contentsByViews, } = this.state;
+    const { contentsLatest, contentsByDistance, contentsByViews } = this.state;
     const { lat, lng } = this.context.state;
     const { classes } = this.props;
 
@@ -184,7 +181,7 @@ class Template extends Component {
                 함께 하는 스터디의 동기부여
               </Typography>
               <Typography variant="h6" style={{ color: 'white' }}>
-                손 쉽게 스터디그룹을 모집하거나 참여할 수 있습니다.
+                손 쉽게 스터디그룹을 만들거나 참여할 수 있습니다.
               </Typography>
               <div className={classes.heroButtons}>
                 <Grid container spacing={16} justify="center">

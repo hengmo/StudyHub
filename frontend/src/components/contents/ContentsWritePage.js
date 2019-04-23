@@ -168,8 +168,7 @@ class ContentsWritePage extends Component {
     const tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
 
     return new Promise((resolve, reject) => {
-      naver.maps.Service.reverseGeocode(
-        {
+      naver.maps.Service.reverseGeocode({
           location: tm128,
           coordType: naver.maps.Service.CoordType.TM128,
         },

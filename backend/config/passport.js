@@ -107,7 +107,7 @@ module.exports.initialize = (passport) => {
       new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: `${serverURI}/api/users/google_auth/redirect`
+        callbackURL: `${serverURI}/users/google_auth/redirect`
       },
       (accessToken, refreshToken, profile, done) => {
         socialLogin('Google',profile,done);
@@ -120,7 +120,7 @@ module.exports.initialize = (passport) => {
       new NaverStrategy({
         clientID: NAVER_CLIENT_ID,
         clientSecret: NAVER_CLIENT_SECRET,
-        callbackURL: `${serverURI}/api/users/naver_auth/redirect`
+        callbackURL: `${serverURI}/users/naver_auth/redirect`
       },
       (accessToken, refreshToken, profile, done) => {
         socialLogin('Naver',profile,done);

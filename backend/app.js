@@ -51,11 +51,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Use Routes
-app.use('/api/users',users);
-app.use('/api/messages',messages);
+app.use('/users',users);
+app.use('/messages',messages);
 app.use('/', indexRouter);
-app.use('/api/contents', contents);
-app.use('/api/coverimg', express.static('coverimg'));
+app.use('/contents', contents);
+app.use('/coverimg', express.static('coverimg'));
 
 
 // catch 404 and forward to error handler

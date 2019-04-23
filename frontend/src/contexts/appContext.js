@@ -95,7 +95,7 @@ export default class AppContextProvider extends Component {
           } else {
             // 새로 로그인을 하는 경우
             if (!this.state.signInInfo.status) {
-              io = socketIOClient('http://ec2-18-216-236-158.us-east-2.compute.amazonaws.com');
+              io = socketIOClient('http://3.14.91.180');
               io.on('unseenMessage', data => {
                 if (data.recipient !== this.state.signInInfo.id) return;
                 console.log('only for' + this.state.signInInfo.email);
