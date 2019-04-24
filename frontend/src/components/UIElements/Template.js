@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, withStyles, InputLabel, FormControl, Select, OutlinedInput, MenuItem } from '@material-ui/core';
 import { AppContext } from '../../contexts/appContext';
 import { apiUrl } from '../../helpers/apiClient';
+import LoadingProgress from '../UIElements/LoadingProgress';
 import './Template.css';
 /* global naver */
 
@@ -80,18 +81,20 @@ class Template extends Component {
       contentsByViews: [],
       searchTerm: '',
       values: 0,
-      labelWidth: 0,
+      categories: ['영어', '일본어', '중국어', '회화', '취업준비', '면접', '자기소개서', '프로젝트', '코딩 테스트', '전공', '인적성&NCS'],
+      loadingCompleted: false,
     };
 
     this.buttonClicked = this.buttonClicked.bind(this);
-  }
+  };
 
   buttonClicked(e) {
     this.setState({ values: this.state.values + 1 });
-  }
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     return this.state.values === nextState.values || this.state.searchTerm === nextState.searchTerm;
-  }
+  };
 
   async componentDidMount() {
     const { lat, lng } = this.context.state;
@@ -112,10 +115,10 @@ class Template extends Component {
     );
 
     this.setState({
-      labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
       contentsLatest: await this.context.actions.getContentsLatest(), // 최신순
       contentsByDistance: contentsByDistance, //거리순
       contentsByViews: await this.context.actions.getContentsByViews(), // 조회순
+      loadingCompleted: true,
     });
   };
 
@@ -139,179 +142,176 @@ class Template extends Component {
   };
 
   render() {
-    const { contentsLatest, contentsByDistance, contentsByViews } = this.state;
+    const { contentsLatest, contentsByDistance, contentsByViews, categories, loadingCompleted } = this.state;
     const { lat, lng } = this.context.state;
     const { classes } = this.props;
 
     return (
-      <Fragment>
-        <div className={classes.heroUnit} style={{ textAlign: 'center' }}>
-          <div className={classes.heroContent}>
-            <video loop autoPlay={true} style={{ width: '100%', zIndex: 0 }}>
-              <source type="video/mp4" data-reactid=".0.1.0.0.0" src={movie} />
-            </video>
-            <div className={classes.textButtonContainer}>
-              <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
-                함께 하는 스터디의 동기부여
-              </Typography>
-              <Typography variant="h6" style={{ color: 'white' }}>
-                손 쉽게 스터디그룹을 만들거나 참여할 수 있습니다.
-              </Typography>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={16} justify="center">
-                  <Grid item>
-                    <div className="textDecoration">
-                      <Link to={`/write?lat=${lat}&lng=${lng}`}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={{
-                            fontSize: '2.5vh',
-                            textDecoration: 'none',
-                            width: '260px',
-                          }}
-                          onClick={this.openSnackbar}
-                        >
-                          스터디 시작하기
-                        </Button>
-                      </Link>
-                    </div>
-                  </Grid>
-                </Grid>
+      <>
+        {loadingCompleted ? 
+          <Fragment>
+            <div className={classes.heroUnit} style={{ textAlign: 'center' }}>
+              <div className={classes.heroContent}>
+                <video loop autoPlay={true} style={{ width: '100%', zIndex: 0 }}>
+                  <source type="video/mp4" data-reactid=".0.1.0.0.0" src={movie} />
+                </video>
+                <div className={classes.textButtonContainer}>
+                  <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
+                    함께 하는 스터디의 동기부여
+                  </Typography>
+                  <Typography variant="h6" style={{ color: 'white' }}>
+                    손 쉽게 스터디그룹을 만들거나 참여할 수 있습니다.
+                  </Typography>
+                  <div className={classes.heroButtons}>
+                    <Grid container spacing={16} justify="center">
+                      <Grid item>
+                        <div className="textDecoration">
+                          <Link to={`/write?lat=${lat}&lng=${lng}`}>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              style={{
+                                fontSize: '2.5vh',
+                                textDecoration: 'none',
+                                width: '260px',
+                              }}
+                              onClick={this.openSnackbar}
+                            >
+                              스터디 시작하기
+                            </Button>
+                          </Link>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className={classes.mainContainer}>
-          <div className={classNames(classes.layout, classes.cardGrid)}>
-            <FormControl style={{ width: '25vh' }} variant="outlined" className={classes.formControl}>
-              <InputLabel
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-                htmlFor="outlined-age-simple"
-              >
-                Category
-              </InputLabel>
-              <Select
-                value={this.state.searchTerm}
-                onChange={this.handleChange}
-                input={<OutlinedInput labelWidth={this.state.labelWidth} name="category" id="outlined-age-simple" />}
-              >
-                <MenuItem value={'영어'}>영어</MenuItem>
-                <MenuItem value={'일본어'}>일본어</MenuItem>
-                <MenuItem value={'중국어'}>중국어</MenuItem>
-                <MenuItem value={'회화'}>회화</MenuItem>
-                <MenuItem value={'취업준비'}>취업준비</MenuItem>
-                <MenuItem value={'면접'}>면접</MenuItem>
-                <MenuItem value={'자기소개서'}>자기소개서</MenuItem>
-                <MenuItem value={'프로젝트'}>프로젝트</MenuItem>
-                <MenuItem value={'코딩 테스트'}>코딩 테스트</MenuItem>
-                <MenuItem value={'전공'}>전공</MenuItem>
-                <MenuItem value={'인적성&NCS'}>인적성&NCS</MenuItem>
-              </Select>
-            </FormControl>
+            <div className={classes.mainContainer}>
+              <div className={classNames(classes.layout, classes.cardGrid)}>
+                <FormControl style={{ width: '25vh' }} variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={ref => {
+                      this.InputLabelRef = ref;
+                    }}
+                    htmlFor="outlined-age-simple"
+                  >
+                    Category
+                  </InputLabel>
+                  <Select
+                    value={this.state.searchTerm}
+                    onChange={this.handleChange}
+                    input={<OutlinedInput name="category" id="category-select" labelWidth={0} />}
+                  >
+                    {categories.map(category => {
+                      return (<MenuItem key={category} value={category}>{category}</MenuItem>);
+                    })}
+                  </Select>
+                </FormControl>
 
-            <Link style={{ textDecoration: 'none' }} to={`/category/` + this.state.searchTerm}>
-              <Button style={{ height: '4.7vh' }} variant="contained" color="primary" className={classes.button}>
-                검색
-              </Button>
-            </Link>
-            <div>
-              <div style={{ textAlign: 'right', marginBottom: '3vh' }}>모집중!!</div>
-              <Grid container spacing={40}>
-                {contentsLatest.map((board, index) => (
-                  <Grid item key={index} sm={6} md={3} lg={3}>
-                    <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
-                        <div key={index} />
-                        <Button
-                          style={{ width: '100%', height: '20vh' }}
-                          className=""
-                          onClick={() => {
-                            let path = `detail/` + board.id;
-                            this.props.history.push(path);
-                          }}
-                        >
-                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
-                        </Button>
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
-                          </Typography>
-                          <Typography>{board.categories + ''}</Typography>
-                        </CardContent>
-                        <CardActions />
-                      </Card>
-                    </div>
+                <Link style={{ textDecoration: 'none' }} to={`/category/` + this.state.searchTerm}>
+                  <Button style={{ height: '4.7vh' }} variant="contained" color="primary" className={classes.button}>
+                    검색
+                  </Button>
+                </Link>
+                <div>
+                  <div style={{ textAlign: 'right', marginBottom: '3vh' }}>모집중!!</div>
+                  <Grid container spacing={40}>
+                    {contentsLatest.map((board, index) => (
+                      <Grid item key={index} sm={6} md={3} lg={3}>
+                        <div className="mediaQuery">
+                          <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                            <div key={index} />
+                            <Button
+                              style={{ width: '100%', height: '20vh' }}
+                              className=""
+                              onClick={() => {
+                                let path = `detail/` + board.id;
+                                this.props.history.push(path);
+                              }}
+                            >
+                              <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
+                            </Button>
+                            <CardContent className={classes.cardContent}>
+                              <Typography gutterBottom variant="h5" component="h2">
+                                <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                              </Typography>
+                              <Typography>{board.categories + ''}</Typography>
+                            </CardContent>
+                            <CardActions />
+                          </Card>
+                        </div>
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>거리순</div>
-              {contentsByDistance.length === 0 && <div style={{ textAlign: 'right', margin: '2vh 0 6vh 0 ' }}>가까운 거리의 스터디가 없습니다.</div>}
-              <Grid container spacing={40}>
-                {contentsByDistance.map((board, index) => (
-                  <Grid item key={index} sm={6} md={3} lg={3}>
-                    <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
-                        <div key={index} />
-                        <Button
-                          style={{ width: '100%', height: '20vh' }}
-                          className=""
-                          onClick={() => {
-                            let path = `detail/` + board.id;
-                            this.props.history.push(path);
-                          }}
-                        >
-                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
-                        </Button>
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
-                          </Typography>
-                          <Typography>{board.categories + ''}</Typography>
-                        </CardContent>
-                        <CardActions />
-                      </Card>
-                    </div>
+                  <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>거리순</div>
+                  {contentsByDistance.length === 0 && <div style={{ textAlign: 'right', margin: '2vh 0 6vh 0 ' }}>가까운 거리의 스터디가 없습니다.</div>}
+                  <Grid container spacing={40}>
+                    {contentsByDistance.map((board, index) => (
+                      <Grid item key={index} sm={6} md={3} lg={3}>
+                        <div className="mediaQuery">
+                          <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                            <div key={index} />
+                            <Button
+                              style={{ width: '100%', height: '20vh' }}
+                              className=""
+                              onClick={() => {
+                                let path = `detail/` + board.id;
+                                this.props.history.push(path);
+                              }}
+                            >
+                              <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
+                            </Button>
+                            <CardContent className={classes.cardContent}>
+                              <Typography gutterBottom variant="h5" component="h2">
+                                <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                              </Typography>
+                              <Typography>{board.categories + ''}</Typography>
+                            </CardContent>
+                            <CardActions />
+                          </Card>
+                        </div>
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
 
-              <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>조회순</div>
-              <Grid container spacing={40}>
-                {contentsByViews.map((board, index) => (
-                  <Grid item key={index} sm={6} md={3} lg={3}>
-                    <div className="mediaQuery">
-                      <Card className={classes.card} style={{ minHeight: '38vh' }}>
-                        <div key={index} />
-                        <Button
-                          style={{ width: '100%', height: '20vh' }}
-                          className=""
-                          onClick={() => {
-                            let path = `detail/` + board.id;
-                            this.props.history.push(path);
-                          }}
-                        >
-                          <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
-                        </Button>
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            <div style={{ marginBottom: '3vh' }}>{board.title}</div>
-                          </Typography>
-                          <Typography>{board.categories + ''}</Typography>
-                        </CardContent>
-                        <CardActions />
-                      </Card>
-                    </div>
+                  <div style={{ textAlign: 'right', margin: '3vh 0 3vh 0 ' }}>조회순</div>
+                  <Grid container spacing={40}>
+                    {contentsByViews.map((board, index) => (
+                      <Grid item key={index} sm={6} md={3} lg={3}>
+                        <div className="mediaQuery">
+                          <Card className={classes.card} style={{ minHeight: '38vh' }}>
+                            <div key={index} />
+                            <Button
+                              style={{ width: '100%', height: '20vh' }}
+                              className=""
+                              onClick={() => {
+                                let path = `detail/` + board.id;
+                                this.props.history.push(path);
+                              }}
+                            >
+                              <CardMedia className={classes.cardMedia} image={`${apiUrl}/${board.imageUrl}`} alt="cover img" />
+                            </Button>
+                            <CardContent className={classes.cardContent}>
+                              <Typography gutterBottom variant="h5" component="h2">
+                                <div style={{ marginBottom: '3vh' }}>{board.title}</div>
+                              </Typography>
+                              <Typography>{board.categories + ''}</Typography>
+                            </CardContent>
+                            <CardActions />
+                          </Card>
+                        </div>
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </Fragment>
+          </Fragment> : (
+            <LoadingProgress />
+          )}
+      </>
     );
   }
 }

@@ -12,7 +12,6 @@ import Template from './components/UIElements/Template';
 import TopAppBar from './components/UIElements/TopAppBar/TopAppBar';
 import ContentsWritePage from './components/contents/ContentsWritePage';
 import ContentsController from './components/contents/ContentsController';
-import NearContentsListView from './components/contents/NearContentsListView';
 import CategoryController from './components/contents/CategoryController';
 import DetailContentsController from './components/contents/DetailContentsController';
 import CustomSnackbar from './components/UIElements/CustomSnackbar';
@@ -21,27 +20,21 @@ import Footer from './components/UIElements/Footer';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.loading = false;
-  }
   componentDidMount() {
     this.props.actions.checkAuth();
-    this.loading = true;
-    
     this.props.actions.getCurrentPosition();
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
       this.props.actions.checkAuth();
-    }
-  }
+    };
+  };
 
   render() {
     return (
       <>
-        {this.loading ? (
+        {this.props.state.loadingStatus ? (
           <div className="App">
             <TopAppBar />
             <CssBaseline />
@@ -55,7 +48,6 @@ class App extends Component {
             <Route path="/detail//" component={Error} />
             <Route path="/signup" component={SignUpPage} />
             <Route path="/signin" component={SignInPage} />
-            <Route path="/near" component={NearContentsListView} />
             <Route path="/loading" component={LoadingProgress} />
             <PrivateRoute path="/mypage" component={MyPageController} />
             <PrivateRoute path="/mymessagepage" component={MyMessagePage} />

@@ -12,6 +12,8 @@ export default class AppContextProvider extends Component {
     lat: 37.5666035,
     lng: 126.9783868,
 
+    loadingStatus: false,
+
     // 현재 Login 상태에 대한 state
     // status : false -> 로그인 x
     // status : true -> 로그인 o
@@ -139,6 +141,11 @@ export default class AppContextProvider extends Component {
         return this.setState({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
+          loadingStatus: true,
+        });
+      }, () => {
+        return this.setState({
+          loadingStatus: true,
         });
       });
     },
