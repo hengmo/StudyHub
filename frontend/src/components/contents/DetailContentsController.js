@@ -15,7 +15,7 @@ class DetailContentsController extends Component {
   async componentDidMount() {
     const { detailTerm } = this.state;
     const content = await this.context.actions.getContentsDetail(detailTerm);
-    const location = await this.getLatLngByAddress(content.studyLocation);
+    const location = await this.context.actions.getLatLngByAddress(content.studyLocation);
     const participants = content.participants;
 
     this.setState({
@@ -28,28 +28,11 @@ class DetailContentsController extends Component {
       center: new naver.maps.LatLng(location),
       zoom: 10,
     });
-    const marker = new naver.maps.Marker({
+    new naver.maps.Marker({
       position: new naver.maps.LatLng(location),
       map: map,
     });
   }
-
-  getLatLngByAddress = address => {
-    return new Promise((resolve, reject) => {
-      naver.maps.Service.geocode(
-        {
-          address: address,
-        },
-        (status, response) => {
-          if (status === naver.maps.Service.Status.ERROR) {
-            reject(alert('지도 API 오류입니다.'));
-          }
-          let item = response.result.items[0];
-          resolve(item.point);
-        },
-      );
-    });
-  };
 
   joinStudy = async () => {
     const { detailTerm } = this.state;

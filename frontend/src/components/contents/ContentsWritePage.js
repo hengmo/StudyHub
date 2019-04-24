@@ -145,7 +145,7 @@ class ContentsWritePage extends Component {
     const currentLatLng = new naver.maps.LatLng(currentPosition.lat, currentPosition.lng);
 
     this.setState({
-      addresses: await this.getAddressesByLatLng(currentLatLng),
+      addresses: await this.context.actions.getAddressesByLatLng(currentLatLng),
     });
 
     const map = new naver.maps.Map('naverMap', {
@@ -159,36 +159,10 @@ class ContentsWritePage extends Component {
     naver.maps.Event.addListener(map, 'click', async e => {
       marker.setPosition(e.latlng);
       this.setState({
-        addresses: await this.getAddressesByLatLng(e.latlng),
+        addresses: await this.context.actions.getAddressesByLatLng(e.latlng),
       });
     });
   }
-
-  getAddressesByLatLng = latlng => {
-    const tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
-
-    return new Promise((resolve, reject) => {
-      naver.maps.Service.reverseGeocode({
-          location: tm128,
-          coordType: naver.maps.Service.CoordType.TM128,
-        },
-        (status, response) => {
-          if (status === naver.maps.Service.Status.ERROR) {
-            return reject(alert('지도 API 오류입니다.'));
-          }
-
-          const { items } = response.result;
-          const addresses = [];
-
-          for (let i = 0, ii = items.length, item; i < ii; i++) {
-            item = items[i];
-            addresses.push(item.address);
-          }
-          return resolve(addresses);
-        },
-      );
-    });
-  };
 
   render() {
     const { classes } = this.props;

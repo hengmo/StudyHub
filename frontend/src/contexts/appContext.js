@@ -1,6 +1,7 @@
 import React, { Component, createContext } from 'react';
 import apiClient from '../helpers/apiClient';
 import socketIOClient from 'socket.io-client';
+/* global naver */
 
 const AppContext = createContext();
 const { Provider } = AppContext;
@@ -41,6 +42,80 @@ export default class AppContextProvider extends Component {
     },
   };
 
+  //Naver Map Api 사용 func
+  makeAddress = (item) => {
+    if (!item) {
+      return;
+    }
+
+    let name = item.name,
+        region = item.region,
+        land = item.land,
+        isRoadAddress = name === 'roadaddr';
+
+    let sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
+
+    if (this.hasArea(region.area1)) {
+      sido = region.area1.name;
+    }
+
+    if (this.hasArea(region.area2)) {
+      sigugun = region.area2.name;
+    }
+
+    if (this.hasArea(region.area3)) {
+      dongmyun = region.area3.name;
+    }
+
+    if (this.hasArea(region.area4)) {
+      ri = region.area4.name;
+    }
+
+    if (land) {
+      if (this.hasData(land.number1)) {
+        if (this.hasData(land.type) && land.type === '2') {
+          rest += '산';
+        }
+
+        rest += land.number1;
+
+        if (this.hasData(land.number2)) {
+          rest += ('-' + land.number2);
+        }
+      }
+
+      if (isRoadAddress === true) {
+        if (this.checkLastString(dongmyun, '면')) {
+          ri = land.name;
+        } else {
+          dongmyun = land.name;
+          ri = '';
+        }
+
+        if (this.hasAddition(land.addition0)) {
+          rest += ' ' + land.addition0.value;
+        }
+      }
+    }
+    return [sido, sigugun, dongmyun, ri, rest].join(' ');
+  };
+
+  hasArea = (area) => {
+    return !!(area && area.name && area.name !== '');
+  };
+  
+  hasData = (data) => {
+    return !!(data && data !== '');
+  };
+  
+  checkLastString = (word, lastString) => {
+    return new RegExp(lastString + '$').test(word);
+  };
+  
+  hasAddition = (addition) => {
+    return !!(addition && addition.value);
+  };
+
   actions = {
     setValue: obj => {
       this.setState({
@@ -67,7 +142,52 @@ export default class AppContextProvider extends Component {
         });
       });
     },
+    getAddressesByLatLng: latlng => {
+      return new Promise((resolve, reject) => {
+        naver.maps.Service.reverseGeocode({
+            coords: latlng,
+            orders: [
+                naver.maps.Service.OrderType.ADDR,
+                naver.maps.Service.OrderType.ROAD_ADDR
+            ].join(',')
+          },
+          (status, response) => {
+            if (status === naver.maps.Service.Status.ERROR) {
+              return reject(alert('지도 API 오류입니다.'));
+            }
+  
+            let items = response.v2.results,
+                address = '',
+                htmlAddresses = [];
+  
+            for (let i = 0, ii = items.length, item; i < ii; i++) {
+              item = items[i];
+              address = this.makeAddress(item) || '';
+              htmlAddresses.push(address);
+            }
+            return resolve(htmlAddresses);
+          },
+        );
+      });
+    },
 
+    getLatLngByAddress: address => {
+      return new Promise((resolve, reject) => {
+        naver.maps.Service.geocode(
+          {
+            address: address,
+          },
+          (status, response) => {
+            if (status === naver.maps.Service.Status.ERROR) {
+              reject(alert('지도 API 오류입니다.'));
+            }
+            let item = response.result.items[0];
+            resolve(item.point);
+          },
+        );
+      });
+    },
+    
     checkAuth: async () => {
       return apiClient
         .post('/users/checkAuth')

@@ -184,7 +184,6 @@ class SendMessageDialog extends Component {
 
 SendMessageDialog.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleOpen: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   initialRecipientEmail: PropTypes.string.isRequired,

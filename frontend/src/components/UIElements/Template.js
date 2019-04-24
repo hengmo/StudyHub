@@ -96,7 +96,7 @@ class Template extends Component {
   async componentDidMount() {
     const { lat, lng } = this.context.state;
     const currentLatLng = new naver.maps.LatLng(lat, lng);
-    const addresses = await this.getAddressesByLatLng(currentLatLng);
+    const addresses = await this.context.actions.getAddressesByLatLng(currentLatLng);
     const currentAddress = addresses[0]
       .split(' ')
       .slice(0, 2)
@@ -117,33 +117,6 @@ class Template extends Component {
       contentsByDistance: contentsByDistance, //거리순
       contentsByViews: await this.context.actions.getContentsByViews(), // 조회순
     });
-  }
-
-  getAddressesByLatLng = latlng => {
-    const tm128 = naver.maps.TransCoord.fromLatLngToTM128(latlng);
-
-    return new Promise((resolve, reject) => {
-      naver.maps.Service.reverseGeocode(
-        {
-          location: tm128,
-          coordType: naver.maps.Service.CoordType.TM128,
-        },
-        (status, response) => {
-          if (status === naver.maps.Service.Status.ERROR) {
-            return reject(alert('지도 API 오류입니다.'));
-          }
-
-          const { items } = response.result;
-          const addresses = [];
-
-          for (let i = 0, ii = items.length, item; i < ii; i++) {
-            item = items[i];
-            addresses.push(item.address);
-          }
-          return resolve(addresses);
-        },
-      );
-    });
   };
 
   handleChange = event => {
@@ -157,6 +130,7 @@ class Template extends Component {
       },
     );
   };
+
   openSnackbar = () => {
     const {
       signInInfo: { status: loginStatus },
