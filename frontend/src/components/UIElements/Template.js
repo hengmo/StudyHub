@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import movie from '../../images/main-video.mp4';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

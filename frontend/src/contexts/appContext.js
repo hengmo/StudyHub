@@ -222,7 +222,7 @@ export default class AppContextProvider extends Component {
           } else {
             // 새로 로그인을 하는 경우
             if (!this.state.signInInfo.status) {
-              io = socketIOClient('http://3.14.91.180');
+              io = socketIOClient('https://api.studyhub.xyz');
               io.on('unseenMessage', data => {
                 if (data.recipient !== this.state.signInInfo.id) return;
                 console.log('only for' + this.state.signInInfo.email);
