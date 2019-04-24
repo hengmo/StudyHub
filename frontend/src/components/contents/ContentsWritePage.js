@@ -35,6 +35,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '63%',
+    maxWidth: 960,
     height: '100%',
     marginTop: 70,
     marginBottom: 70,

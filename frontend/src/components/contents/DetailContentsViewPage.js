@@ -133,7 +133,7 @@ const style = theme => ({
   },
 });
 
-class DetailContentsView extends Component {
+class DetailContentsViewPage extends Component {
   static contextType = AppContext;
 
   constructor(props) {
@@ -374,7 +374,7 @@ class DetailContentsView extends Component {
   }
 }
 
-DetailContentsView.propTypes = {
+DetailContentsViewPage.propTypes = {
   classes: propTypes.object.isRequired,
   content: propTypes.object.isRequired,
   participants: propTypes.array.isRequired,
@@ -382,4 +382,4 @@ DetailContentsView.propTypes = {
   joinStudy: propTypes.func.isRequired,
 };
 
-export default withStyles(style)(DetailContentsView);
+export default withStyles(style)(DetailContentsViewPage);

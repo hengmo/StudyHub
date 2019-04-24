@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
-import DetailContentsView from './DetailContentsView';
+import DetailContentsViewPage from './DetailContentsViewPage';
 
 /* global naver */
 
@@ -57,7 +57,7 @@ class DetailContentsController extends Component {
     return (
       <div>
         {content ? (
-          <DetailContentsView
+          <DetailContentsViewPage
             content={content}
             participants={participants}
             signInInfo={signInInfo}

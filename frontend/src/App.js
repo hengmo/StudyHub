@@ -10,10 +10,10 @@ import MyMessagePage from './components/MyMessage/MyMessagePage';
 import MyPageController from './components/MyPage/MyPageController';
 import Template from './components/UIElements/Template';
 import TopAppBar from './components/UIElements/TopAppBar/TopAppBar';
-import ContentsWritePage from './components/contents/ContentsWritePage';
-import ContentsController from './components/contents/ContentsController';
-import CategoryController from './components/contents/CategoryController';
-import DetailContentsController from './components/contents/DetailContentsController';
+import ContentsWritePage from './components/Contents/ContentsWritePage';
+import ContentsListController from './components/Contents/ContentsListController';
+import CategoryListController from './components/Contents/CategoryListController';
+import DetailContentsController from './components/Contents/DetailContentsController';
 import CustomSnackbar from './components/UIElements/CustomSnackbar';
 import LoadingProgress from './components/UIElements/LoadingProgress';
 import Footer from './components/UIElements/Footer';
@@ -41,8 +41,8 @@ class App extends Component {
             <CustomSnackbar />
             <Route exact path="/" component={Template} />
             <PrivateRoute path="/write" component={ContentsWritePage} />
-            <Route path="/contents" component={ContentsController} />
-            <Route path="/category/:id" component={CategoryController} />
+            <Route path="/contents" component={ContentsListController} />
+            <Route path="/category/:id" component={CategoryListController} />
             <Route path="/category//" component={Error} />
             <Route path="/detail/:id" component={DetailContentsController} />
             <Route path="/detail//" component={Error} />
