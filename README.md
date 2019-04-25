@@ -18,7 +18,7 @@
 - MongoDB(mongoose)
 - Amazon EC2
 - Amazon S3
-- Amazon 53
+- Amazon Route 53
 
 ### 개발 툴
 
