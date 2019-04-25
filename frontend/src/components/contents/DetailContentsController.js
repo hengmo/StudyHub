@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import DetailContentsViewPage from './DetailContentsViewPage';
+import LoadingProgress from '../UIElements/LoadingProgress'
 
 /* global naver */
 
@@ -66,7 +67,7 @@ class DetailContentsController extends Component {
             leaveStudy={this.leaveStudy}
           />
         ) : (
-          <div style={{ height: 900 }} />
+          <LoadingProgress />
         )}
       </div>
     );

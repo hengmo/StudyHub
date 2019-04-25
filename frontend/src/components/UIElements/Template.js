@@ -11,27 +11,35 @@ import './Template.css';
 /* global naver */
 
 const styles = theme => ({
-  default: {
-    color: '#90CAF9',
+  heroUnit: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  icon: {
-    marginRight: theme.spacing.unit * 2,
+  videoContainer: {
+    width: '100%',
   },
   textButtonContainer: {
-    position: 'relative',
-    width: '100%',
-    height: 340,
-    maxHeight: 340,
-    marginTop: -730,
-    zIndex: 10,
+    top: 220,
+    position: 'absolute',
+    textAlign: 'center',
+    [theme.breakpoints.up(1540)]: {
+      top: 280,
+    },
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4,
   },
   mainContainer: {
+    top: -380,
     width: '100%',
+    marginBottom: -380,
     background: '#FFFFFF',
     position: 'relative',
+    [theme.breakpoints.up(1540)]: {
+      top: -500,
+      marginBottom: -500,
+    },
   },
   layout: {
     width: 'auto',
@@ -149,40 +157,34 @@ class Template extends Component {
       <>
         {loadingCompleted ? 
           <Fragment>
-            <div className={classes.heroUnit} style={{ textAlign: 'center' }}>
-              <div className={classes.heroContent}>
+            <div className={classes.heroUnit}>
+              <div className={classes.videoContainer}>
                 <video loop autoPlay={true} style={{ width: '100%', zIndex: 0 }}>
                   <source type="video/mp4" data-reactid=".0.1.0.0.0" src={movie} />
                 </video>
-                <div className={classes.textButtonContainer}>
-                  <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
-                    함께 하는 스터디의 동기부여
-                  </Typography>
-                  <Typography variant="h6" style={{ color: 'white' }}>
-                    손 쉽게 스터디그룹을 만들거나 참여할 수 있습니다.
-                  </Typography>
-                  <div className={classes.heroButtons}>
-                    <Grid container spacing={16} justify="center">
-                      <Grid item>
-                        <div className="textDecoration">
-                          <Link to={`/write?lat=${lat}&lng=${lng}`}>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              style={{
-                                fontSize: '2.5vh',
-                                textDecoration: 'none',
-                                width: '260px',
-                              }}
-                              onClick={this.openSnackbar}
-                            >
-                              스터디 시작하기
-                            </Button>
-                          </Link>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </div>
+              </div>
+              <div className={classes.textButtonContainer}>
+                <Typography variant="h4" style={{ color: 'white', fontWeight: 600 }}>
+                  함께 하는 스터디의 동기부여
+                </Typography>
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  손 쉽게 스터디그룹을 만들거나 참여할 수 있습니다.
+                </Typography>
+                <div className={classes.heroButtons}>
+                  <Link to={`/write?lat=${lat}&lng=${lng}`} style={{ textDecoration: 'none', }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        fontSize: '2.5vh',
+                        textDecoration: 'none',
+                        width: '260px',
+                      }}
+                      onClick={this.openSnackbar}
+                    >
+                      스터디 시작하기
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
