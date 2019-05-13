@@ -37,7 +37,7 @@
 
 ## 대표적으로 프로젝트에 기여한 코드
 
-```
+```javascript
 import axios from 'axios';
 
 const apiUrl = 'https://api.studyhub.xyz';
