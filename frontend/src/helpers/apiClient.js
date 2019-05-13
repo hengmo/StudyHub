@@ -10,7 +10,7 @@ function formatUrl(path) {
 class ApiClient {
   constructor() {
     methods.forEach((method) => {
-      this[method] = (path, data, config) => new Promise((resolve, reject) => {
+      this[method] = (path, data) => new Promise((resolve, reject) => {
           axios({
             method: method,
             url: formatUrl(path),
