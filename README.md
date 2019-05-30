@@ -30,10 +30,10 @@
 
 ## 맡은 기능
 
-- 스터디 작성 페이지(Naver Map API활용)
-- 스터디 상세보기 페이지(스터디 참여/탈퇴 가능)
-- 마이페이지(이메일/닉네임/회원가입일 확인, 스터디 상세보기/탈퇴/삭제 가능)
-- axios 비동기 요청 코드 모듈화
+- [스터디 작성/상세 페이지(Naver Map API 활용, 스터디 참여/탈퇴 기능)](https://github.com/hengmo/StudyHub/tree/master/frontend/src/components/contents)
+- [마이페이지(이메일/닉네임/회원가입일 확인, 스터디 상세보기/탈퇴/삭제 기능)](https://github.com/hengmo/StudyHub/tree/master/frontend/src/components/MyPage)
+- [스터디 생성, 삭제, 참여, 탈퇴, 이미지 업로드 API](https://github.com/hengmo/StudyHub/blob/master/backend/routes/api/contents.js)
+- [axios 비동기 요청 코드 모듈화](https://github.com/hengmo/StudyHub#%EB%8C%80%ED%91%9C%EC%A0%81%EC%9C%BC%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%97%90-%EA%B8%B0%EC%97%AC%ED%95%9C-%EC%BD%94%EB%93%9C)
 
 ## 대표적으로 프로젝트에 기여한 코드
 
