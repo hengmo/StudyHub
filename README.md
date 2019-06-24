@@ -6,8 +6,8 @@
 
 ### 프론트엔드
 
-- HTML
-- CSS
+- HTML5
+- CSS3
 - Material-UI
 - React.JS(with Context API)
 
