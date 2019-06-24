@@ -143,7 +143,7 @@ class MyMessagePage extends Component {
   }
 
   getSelectedMessages(event, messageKey) {
-    let checkedMessages = this.state.selectedElements;
+    const checkedMessages = this.state.selectedElements;
 
     // 체크했을 때
     if (event.target.checked) {
