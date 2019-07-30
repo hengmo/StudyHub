@@ -65,7 +65,7 @@ router.post('/remove',ensureAuthenticatedErrorMessage,(req,res,next)=>{
 });
 
 router.post('/send',ensureAuthenticatedErrorMessage,(req,res,next)=> {
-  const {recipientEmail, messageTitle, messageBody, senderId} = req.body;
+  const {recipientEmail, messageTitle, messageBody} = req.body;
   
   User.findOne({email: recipientEmail}, '_id')
     .exec((err, data) => {
@@ -79,7 +79,7 @@ router.post('/send',ensureAuthenticatedErrorMessage,(req,res,next)=> {
           title: messageTitle,
           body: messageBody,
           recipient: data._id,
-          sender: senderId
+          sender: req.user._id,
         };
 
         newMessage = new Messages(message);

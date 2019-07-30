@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import MyPageView from './MyPageView';
+import LoadingProgress from '../UIElements/LoadingProgress';
 
 class MyPageController extends Component {
   static contextType = AppContext;
@@ -11,7 +12,7 @@ class MyPageController extends Component {
   };
 
   async componentDidMount() {
-    const { signInInfo: { email: loginedUserEmail, } } = this.context.state;
+    const { userInfo: { email: loginedUserEmail, } } = this.context.state;
     const contents = await this.context.actions.getContentsList();
     const myStudy = contents.filter(content => content.leader.email === loginedUserEmail);
     const joinedStudy = [];
@@ -39,13 +40,13 @@ class MyPageController extends Component {
 
   render() {
     const { contents, myStudy, joinedStudy, } = this.state;
-    const { signInInfo, } = this.context.state;
+    const { userInfo, } = this.context.state;
     return (
       <div>
         {contents ? (
-          <MyPageView myStudy={myStudy} joinedStudy={joinedStudy} signInInfo={signInInfo} leaveStudy={this.leaveStudy} deleteStudy={this.deleteStudy} />
+          <MyPageView myStudy={myStudy} joinedStudy={joinedStudy} userInfo={userInfo} leaveStudy={this.leaveStudy} deleteStudy={this.deleteStudy} />
         ) : (
-          <div style={{ height: 900 }} />
+          <LoadingProgress />
         )}
       </div>
     );

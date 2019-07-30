@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import ContentsListViewPage from './ContentsListViewPage';
+import LoadingProgress from '../UIElements/LoadingProgress';
 
 class CategoryController extends Component {
   static contextType = AppContext;
@@ -24,7 +25,7 @@ class CategoryController extends Component {
         {contents ? (
           <ContentsListViewPage contents={contents} />
         ) : (
-          <div style={{ height: 900 }} />
+          <LoadingProgress />
         )}
       </div>
     );

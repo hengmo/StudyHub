@@ -8,7 +8,8 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 850,
+    height: 743,
+    minHeight: 743,
   },
   progress: {
     margin: theme.spacing.unit * 2,

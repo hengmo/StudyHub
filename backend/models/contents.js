@@ -11,8 +11,8 @@ const ContentsSchema = new Schema(
   description: String,
   studyLocation: String,
   imageUrl: String,
-  createdAt : { type: Date, default: utc },
-  views : {type:Number, default : 0},
+  createdAt : { type: Date, default: Date.now },
+  views : { type:Number, default : 0 },
   leader: Object,
   participants: Array,
 });

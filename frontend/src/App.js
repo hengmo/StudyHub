@@ -8,7 +8,7 @@ import SignUpPage from './components/UserPages/SignUpPage';
 import SignInPage from './components/UserPages/SignInPage';
 import MyMessagePage from './components/MyMessage/MyMessagePage';
 import MyPageController from './components/MyPage/MyPageController';
-import Template from './components/UIElements/Template';
+import TemplateController from './components/UIElements/TemplateController';
 import TopAppBar from './components/UIElements/TopAppBar/TopAppBar';
 import ContentsWritePage from './components/Contents/ContentsWritePage';
 import ContentsListController from './components/Contents/ContentsListController';
@@ -30,17 +30,18 @@ class App extends Component {
       this.props.actions.checkAuth();
     };
   };
-
+  
   render() {
+    const loginStatus = this.props.state.userInfo.status;
     return (
       <>
         {this.props.state.loadingStatus ? (
           <div className="App">
-            <TopAppBar />
+            <TopAppBar loginStatus={loginStatus} />
             <CssBaseline />
             <CustomSnackbar />
-            <Route exact path="/" component={Template} />
-            <PrivateRoute path="/write" component={ContentsWritePage} />
+            <Route exact path="/" component={TemplateController} />
+            <PrivateRoute path="/write" loginStatus={loginStatus} component={ContentsWritePage} />
             <Route path="/contents" component={ContentsListController} />
             <Route path="/category/:id" component={CategoryListController} />
             <Route path="/category//" component={Error} />
@@ -48,9 +49,8 @@ class App extends Component {
             <Route path="/detail//" component={Error} />
             <Route path="/signup" component={SignUpPage} />
             <Route path="/signin" component={SignInPage} />
-            <Route path="/loading" component={LoadingProgress} />
-            <PrivateRoute path="/mypage" component={MyPageController} />
-            <PrivateRoute path="/mymessagepage" component={MyMessagePage} />
+            <PrivateRoute path="/mypage" loginStatus={loginStatus} component={MyPageController} />
+            <PrivateRoute path="/mymessagepage" loginStatus={loginStatus} component={MyMessagePage} />
             <Footer />
           </div>
         ) : (

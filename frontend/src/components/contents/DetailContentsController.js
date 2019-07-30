@@ -10,10 +10,12 @@ class DetailContentsController extends Component {
 
   state = {
     detailTerm: this.props.match.params.id,
-    signInInfo: {},
+    userInfo: {},
+    buttonLoading: false,
   };
 
   async componentDidMount() {
+    window.scrollTo(0, 0);
     const { detailTerm } = this.state;
     const content = await this.context.actions.getContentsDetail(detailTerm);
     const location = await this.context.actions.getLatLngByAddress(content.studyLocation);
@@ -22,7 +24,7 @@ class DetailContentsController extends Component {
     this.setState({
       content,
       participants,
-      signInInfo: this.context.state.signInInfo,
+      userInfo: this.context.state.userInfo,
     });
 
     const map = new naver.maps.Map('naverMap', {
@@ -35,36 +37,46 @@ class DetailContentsController extends Component {
     });
   }
 
+  buttonSetState = () => {
+    this.setState({
+      buttonLoading: true,
+    });
+  };
+
   joinStudy = async () => {
     const { detailTerm } = this.state;
+    this.buttonSetState();
     await this.context.actions.joinStudy(detailTerm);
     window.location.reload();
   };
 
   leaveStudy = async () => {
     const { detailTerm } = this.state;
+    this.buttonSetState();
     await this.context.actions.leaveStudy(detailTerm);
     window.location.reload();
   };
 
   deleteStudy = async () => {
     const { detailTerm } = this.state;
+    this.buttonSetState();
     await this.context.actions.deleteStudy(detailTerm);
     this.props.history.push('/');
   };
 
   render() {
-    const { content, participants, signInInfo, } = this.state;
+    const { content, participants, userInfo, buttonLoading, } = this.state;
     return (
       <div>
         {content ? (
           <DetailContentsViewPage
             content={content}
             participants={participants}
-            signInInfo={signInInfo}
+            userInfo={userInfo}
             joinStudy={this.joinStudy}
             deleteStudy={this.deleteStudy}
             leaveStudy={this.leaveStudy}
+            buttonLoading={buttonLoading}
           />
         ) : (
           <LoadingProgress />

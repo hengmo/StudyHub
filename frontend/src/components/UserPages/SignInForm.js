@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Page.css';
-import apiClient from '../../helpers/apiClient';
 import { apiUrl } from '../../helpers/apiClient';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
@@ -12,12 +11,14 @@ import Paper from '@material-ui/core/Paper';
 import { green, red } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../../contexts/appContext';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     margin: 20,
   },
   TextField: {
@@ -100,22 +101,6 @@ class SignInPage extends Component {
         passwordValError: '',
       },
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  setValidationResult(validationResult) {
-    let { formFieldValid, formFieldMessage } = this.state;
-
-    formFieldValid[validationResult['fieldName'] + 'Valid'] = validationResult['isCorrect'];
-    formFieldMessage[validationResult['fieldName'] + 'ValError'] = validationResult['message'];
-
-    this.setState(prevState => ({
-      ...prevState,
-      formFieldValid: formFieldValid,
-      formFieldMessage: formFieldMessage,
-    }));
   }
 
   onChange = name => e => {
@@ -129,26 +114,22 @@ class SignInPage extends Component {
     }));
   };
 
-  onSubmit(e) {
-    //you cannot return false to prevent default behavior in React. You must call preventDefault explicitly.
+  onSubmit = async e => {
     e.preventDefault();
-
-    const { emailValid, passwordValid } = this.state.formFieldValid;
     const { email, password } = this.state.formFieldInput;
-
-    if (emailValid === null && passwordValid === null) {
-      apiClient
-        .post('/users/signin', {
-          email: email,
-          password: password,
-        })
-        .then(res => {
-          this.context.actions.snackbarOpenHandler(res.message, res.state);
-          this.props.history.push("/");
-        })
-        .catch(err => console.log(err));
-    } else console.log('Submit conditions are not satisfied..');
+    const { state, message } =  await this.context.actions.signin(email, password);
+    
+    if (message === "Missing credentials") {
+      return this.context.actions.snackbarOpenHandler('이메일 또는 비밀번호를 입력해주세요.', 'warning');
+    }
+    else if (state === "warning") {
+      return this.context.actions.snackbarOpenHandler('입력하신 이메일 또는 비밀번호가 잘못 되었습니다.', state);
+    }
+    this.context.actions.snackbarOpenHandler(message, state);
+    localStorage.setItem('user-info', JSON.stringify({ email: email, loginStatus: true, }));
+    this.props.history.push("/");
   }
+
   render() {
     const { classes } = this.props;
 
@@ -175,9 +156,9 @@ class SignInPage extends Component {
               <TextField
                 id="emailInp"
                 label="이메일"
+                fullWidth
                 className={classes.textField}
                 value={this.state.formFieldInput.email}
-                error={this.state.formFieldValid.emailValid !== null ? true : null}
                 helperText={this.state.formFieldMessage.emailValError}
                 onChange={this.onChange('email')}
                 margin="normal"
@@ -185,10 +166,10 @@ class SignInPage extends Component {
               <TextField
                 id="passwordInp"
                 label="비밀번호"
+                fullWidth
                 type="password"
                 className={classes.textField}
                 value={this.state.formFieldInput.password}
-                error={this.state.formFieldValid.passwordValid !== null ? true : null}
                 helperText={this.state.formFieldMessage.passwordValError}
                 onChange={this.onChange('password')}
                 margin="normal"
@@ -206,6 +187,7 @@ class SignInPage extends Component {
                   네이버 계정으로 시작하기
                 </Button>
               </a>
+              <Button style={{ marginTop: 19, fontSize: 16, width:'fit-content', }} component={Link} to="/signup" color="primary">회원가입</Button>
             </form>
           </Paper>
         </main>

@@ -2,74 +2,56 @@ import React, { Component, Fragment } from 'react';
 import Inbox from './Inbox';
 import { AppContext } from '../../contexts/appContext';
 import apiClient from '../../helpers/apiClient';
-import List from '@material-ui/core/List';
+import { List, Button, IconButton, Grid, Typography, withStyles, Snackbar, Tooltip, } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import SendMessageDialog from './SendMessageDialog';
-import Snackbar from '@material-ui/core/Snackbar';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
-import SendIcon from '@material-ui/icons/Send';
+import LoadingProgress from '../UIElements/LoadingProgress';
 
 const styles = theme => ({
   marginAuto: {
     margin: 'auto',
   },
-
   appBar: {
     position: 'relative',
   },
-
   flex: {
     flex: 1,
   },
-
   dialogBody: {
     margin: '30px 15px',
     width: 'calc(100% - 30px)',
   },
-
   dialogTextField: {
     margin: '8px',
     width: 'calc(100% - 16px)',
   },
-
   page: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '70vw',
-    height: '60vw',
+    maxWidth: 1076,
+    height: 'auto',
     minHeight: '60vh',
     margin: '10vh auto',
   },
-
   tableStyle: {
     width: '100%',
     borderCollapse: 'collapse',
   },
-
   aboveList: {
+    width: '100%',
     display: 'flex',
-    marginBottom: '30px',
   },
-
-  rightPager: {
+  bottomPager: {
     width: '200px',
-    marginLeft: 'auto',
   },
-
   leftOptions: {
+    flexGrow: 1,
     marginLeft: '20px',
-  },
-
-  absolute: {
-    position: 'fixed',
-    bottom: theme.spacing.unit * 10,
-    right: theme.spacing.unit * 8,
-    zIndex: 1,
   },
 });
 
@@ -137,7 +119,7 @@ class MyMessagePage extends Component {
   }
   // change stream 이벤트 핸들러(메세지가 왔을 때)
   getArrivalMessage(data) {
-    if (!this.context.state.signInInfo.status || this.context.state.signInInfo.id !== data.recipient) return true;
+    if (!this.context.state.userInfo.status || this.context.state.userInfo.id !== data.recipient) return true;
 
     this.getMessagesApi(this.state.messagePagerInfo, 'changeTotal', 1);
   }
@@ -205,7 +187,7 @@ class MyMessagePage extends Component {
 
   async componentDidMount() {
     this.context.actions.checkAuth().then(() => {
-      if (!this.context.state.signInInfo.status) return;
+      if (!this.context.state.userInfo.status) return;
       // 핸들러 등록
       this.context.state.socketConnection.io.on('getmessage', data => {
         this.getArrivalMessage(data);
@@ -262,54 +244,45 @@ class MyMessagePage extends Component {
     // };
 
     return this.state.loading === true ? (
-      <div className={classes.page} />
+      <LoadingProgress />
     ) : (
       <Fragment>
         <div className={classes.page}>
           <div className={classes.aboveList}>
             <div className={classes.leftOptions}>
-              <IconButton onClick={this.removeMessages} aria-label="Delete">
+              <Button variant="contained" color="primary" onClick={() => this.handleOpen()}>새 쪽지 작성</Button>
+            </div>
+            <Tooltip title="쪽지 삭제" aria-label="delete">
+              <IconButton style={{ marginRight: 11, }} onClick={this.removeMessages} aria-label="Delete">
                 <DeleteIcon />
               </IconButton>
-            </div>
-            <div className={classes.rightPager}>
-              <Grid container>
-                <Grid className={classes.marginAuto} item xs={6}>
-                  <Typography>{total === 0 ? '메시지 없음' : `${(page - 1) * showNum + 1} - ${(page - 1) * showNum + currentNum} 중 ${total}`}</Typography>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton disabled={page === 1} onClick={() => this.messagePagerHandler('left')}>
-                    <ChevronLeftIcon />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton disabled={total === 0 || page === Math.ceil(total / showNum)} onClick={() => this.messagePagerHandler('right')}>
-                    <ChevronRightIcon />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            </div>
+            </Tooltip>
           </div>
 
-          <List>{this.renderingList()}</List>
+          <List style={{ width: '100%', }}>{this.renderingList()}</List>
 
-          <Tooltip title="쪽지 전송" aria-label="send">
-            <Fab
-              onClick={() => {
-                this.handleOpen();
-              }}
-              color="primary"
-              className={classes.absolute}
-            >
-              <SendIcon />
-            </Fab>
-          </Tooltip>
+          <div className={classes.bottomPager}>
+            <Grid container>
+              <Grid className={classes.marginAuto} item xs={6}>
+                <Typography style={{ minWidth: 110, }}>{total === 0 ? '메시지 없음' : `${(page - 1) * showNum + 1} - ${(page - 1) * showNum + currentNum} 중 ${total}`}</Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <IconButton disabled={page === 1} onClick={() => this.messagePagerHandler('left')}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </Grid>
+              <Grid item xs={3}>
+                <IconButton disabled={total === 0 || page === Math.ceil(total / showNum)} onClick={() => this.messagePagerHandler('right')}>
+                  <ChevronRightIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </div>
         </div>
 
         <SendMessageDialog
           innerRef={ele => (this.sendMessageDialog = ele)}
           handleClose={this.handleClose}
-          handleOpen={this.handleOpen}
           initialRecipientEmail={sendMessageTo}
           open={messageSendDialogOpen}
         />

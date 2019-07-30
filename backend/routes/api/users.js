@@ -112,16 +112,15 @@ router.get('/verify',(req, res , next)=>{
 
 // 로그인 router
 router.post('/signin',(req, res, next) => {
-  // origin url
   let redirectURL = req.headers.referer;
   // history.push() => basename이 붙기 때문에 pathname을 추출한다. 
   redirectURL = new URL(redirectURL).pathname;
 
-  passport.authenticate('local', async (err,user,info)=>{
+  passport.authenticate('local', async (err, user, info) => {
     if (err) return next(err)
     
     if (user){
-      await req.logIn(user, (err)=>{
+      await req.logIn(user, (err) => {
         if (err)
           next(err);
       })
@@ -129,16 +128,13 @@ router.post('/signin',(req, res, next) => {
     info.url = info.url === null ? redirectURL : info.url;
     res.send(info);
   })(req, res, next)
-// If this function gets called, authentication was successful.
 })
 
 // test 용 router
-router.get('/session',(req, res, next)=>{
+router.get('/session',(req, res, next) => {
   res.send(req.header)
 });
 
-//If user is logged in, passport.js will create user object in req for every request in express.js,
-//which you can check for existence in any middleware:
 router.post('/checkAuth',(req, res, next )=>{
   if (req.user){
     res.json({

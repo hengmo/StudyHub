@@ -25,18 +25,17 @@ const styles = {
     fontSize: 18,
     fontWeight: 500,
   },
-  toolbar:{
-    maxHeight:'64px'
-  }
+  toolbar: {
+    maxHeight: '64px',
+  },
 };
 
 class TopAppBar extends Component {
   static contextType = AppContext;
 
   render() {
-    const { classes } = this.props;
-    const { status: loginStatus } = this.context.state.signInInfo;
-    
+    const { classes, loginStatus } = this.props;
+
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="static">
@@ -46,8 +45,21 @@ class TopAppBar extends Component {
                 STUDYHUB
               </Link>
             </div>
-            <Button className={classes.button} component={Link} to="/contents" style={{color: '#FFFFFF'}}>스터디 찾기</Button>
-            {loginStatus === false ? <div><Button className={classes.button} component={Link} to="/signup" style={{color: '#90CAF9'}}>회원가입</Button><Button className={classes.button} component={Link} to="/signin" style={{color: '#FFFFFF'}}>로그인</Button></div> : <Avatar/>}
+            <Button className={classes.button} component={Link} to="/contents" style={{ color: '#FFFFFF' }}>
+              스터디 찾기
+            </Button>
+            {loginStatus === false ? (
+              <div>
+                <Button className={classes.button} component={Link} to="/signup" style={{ color: '#90CAF9' }}>
+                  회원가입
+                </Button>
+                <Button className={classes.button} component={Link} to="/signin" style={{ color: '#FFFFFF' }}>
+                  로그인
+                </Button>
+              </div>
+            ) : (
+              <Avatar />
+            )}
           </Toolbar>
         </AppBar>
       </div>

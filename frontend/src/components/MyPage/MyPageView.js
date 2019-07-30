@@ -83,7 +83,7 @@ const MyPageTest = props => {
     classes,
     myStudy,
     joinedStudy,
-    signInInfo: { email: loginedUserEmail, name: loginedUserName, image: loginedUserImg, date: loginedUserDate },
+    userInfo: { email: loginedUserEmail, name: loginedUserName, image: loginedUserImg, date: loginedUserDate },
     leaveStudy,
     deleteStudy,
   } = props;
@@ -197,7 +197,7 @@ MyPageTest.propTypes = {
   joinedStudy: PropTypes.array.isRequired,
   leaveStudy: PropTypes.func.isRequired,
   deleteStudy: PropTypes.func.isRequired,
-  signInInfo: PropTypes.object.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(MyPageTest);

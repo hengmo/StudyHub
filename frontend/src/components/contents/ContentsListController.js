@@ -8,7 +8,7 @@ class ContentsController extends Component {
   state = {}
 
   async componentDidMount() {
-    const contents = await this.context.actions.getContentsList();
+    const contents = await this.context.actions.getContentsLatest();
     this.setState({
       contents,
     });
