@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import { AppContext } from '../../contexts/appContext';
 import queryString from 'query-string';
-import { withStyles, Paper, TextField, Typography, OutlinedInput, Select, MenuItem, FormControl, Checkbox, FormGroup, FormControlLabel, InputLabel } from '@material-ui/core';
+import {
+  withStyles,
+  Paper,
+  TextField,
+  Typography,
+  OutlinedInput,
+  Select,
+  MenuItem,
+  FormControl,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  InputLabel,
+} from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import RequestButton from '../UIElements/RequestButton';
 import studyBackgroundImg from '../../images/study-background.jpg';
@@ -118,11 +131,9 @@ class ContentsWritePage extends Component {
 
     if (title === '' || categories === '' || description === '' || studyLocation === '') {
       return this.context.actions.snackbarOpenHandler('스터디 정보를 모두 작성 해주세요.', 'warning');
-    }
-    else if (categories.length === 0) {
+    } else if (categories.length === 0) {
       return this.context.actions.snackbarOpenHandler('스터디 목적을 1개 이상 선택해주세요.', 'warning');
-    }
-    else if (coverImg && coverImg.type !== 'image/png' && coverImg.type !== 'image/jpeg' && coverImg.type !== 'image/bmp') {
+    } else if (coverImg && coverImg.type !== 'image/png' && coverImg.type !== 'image/jpeg' && coverImg.type !== 'image/bmp') {
       return this.context.actions.snackbarOpenHandler('이미지 파일 형식이 아닙니다.', 'warning');
     }
 
@@ -200,13 +211,24 @@ class ContentsWritePage extends Component {
               />
             </div>
             <div className={classes.inputContainer}>
-              <Typography className={classes.inputText} component={'span'}>스터디 목적<Typography style={{ fontSize: 16, }}>(복수 선택 가능)</Typography></Typography>
-              
+              <Typography className={classes.inputText} component={'span'}>
+                스터디 목적<Typography style={{ fontSize: 16 }}>(복수 선택 가능)</Typography>
+              </Typography>
+
               <FormGroup row className={classes.categoryGroup}>
                 {categories.map(category => {
                   return (
                     <FormControlLabel
-                      control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} color="primary" value={category} key={category} onChange={this.categoryHandler} />}
+                      control={
+                        <Checkbox
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          color="primary"
+                          value={category}
+                          key={category}
+                          onChange={this.categoryHandler}
+                        />
+                      }
                       label={category}
                       key={category}
                     />
@@ -253,7 +275,7 @@ class ContentsWritePage extends Component {
             <div className={classes.inputContainer}>
               <Typography className={classes.inputText}>스터디 커버 이미지</Typography>
               <input type="file" id="coverImg" multiple />
-              <Typography style={{ fontSize: 14, }}>(미 선택시 기본 이미지 적용)</Typography>
+              <Typography style={{ fontSize: 14 }}>(미 선택시 기본 이미지 적용)</Typography>
             </div>
             <div className={classes.buttonContainer}>
               <RequestButton value="스터디 작성" buttonLoading={buttonLoading} clickHandler={this.addContents} />
